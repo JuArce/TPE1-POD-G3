@@ -23,5 +23,13 @@ public class CancelAction {
     }
 
     public void run() {
+        var flightCode = arguments.getFlightCode().get();
+
+        try{
+            service.cancelFlight(flightCode);
+            logger.info("The flight {} is cancelled", flightCode);
+        } catch (Exception e) {
+            logger.error("Error canceling flight {}", flightCode);
+        }
     }
 }
