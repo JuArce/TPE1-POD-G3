@@ -81,7 +81,8 @@ public class CliParser {
         return args.isValid() ? Optional.of(args) : Optional.empty();
     }
 
-    public class Arguments{
+    public static class Arguments{
+        private Logger logger = LoggerFactory.getLogger(ar.edu.itba.pod.client.admin.CliParser.class);
         private String serverAddress;
         private ActionType action;
         private Optional<String> filePath = Optional.empty();

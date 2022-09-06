@@ -11,25 +11,34 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.rmi.RemoteException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 public class ModelsAction {
-    private final Logger logger = LoggerFactory.getLogger(ModelsAction.class);
+    private final Logger logger;
     private final AdminService service;
     private final CliParser.Arguments arguments;
 
     public ModelsAction(AdminService service, CliParser.Arguments arguments) {
         this.service = service;
         this.arguments = arguments;
+        this.logger = LoggerFactory.getLogger(ModelsAction.class);
+    }
+
+    public ModelsAction(AdminService service, CliParser.Arguments arguments, Logger logger) {
+        this.service = service;
+        this.arguments = arguments;
+        this.logger = logger;
     }
 
     public void run() throws Exception {
 
+
         var planeModels = Files
-                    .readAllLines(Path.of(String.valueOf(arguments.getFilePath())))
+                    .readAllLines(Paths.get(arguments.getFilePath().get()))
                     .stream().skip(1)
                     .map(t-> t.split(";"))
                     .map(t-> new PlaneModel(t[0], t[1]))
@@ -57,7 +66,6 @@ public class ModelsAction {
 
         private PlaneModel(String planeModelName, String seats) {
             this.planeModelName = planeModelName;
-            // BUSINESS#2#3,PREMIUM_ECONOMY#3#3,ECONOMY#20#10
             this.seatsPerCategory = new HashMap<>();
 
             for (var section: seats.split(",")) {
