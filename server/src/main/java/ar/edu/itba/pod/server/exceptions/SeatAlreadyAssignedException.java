@@ -1,4 +1,4 @@
-package ar.edu.itba.pod.exceptions;
+package ar.edu.itba.pod.server.exceptions;
 
 import ar.edu.itba.pod.models.Seat;
 

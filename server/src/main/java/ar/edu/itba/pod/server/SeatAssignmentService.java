@@ -2,12 +2,11 @@ package ar.edu.itba.pod.server;
 
 import ar.edu.itba.pod.exceptions.*;
 import ar.edu.itba.pod.models.*;
-import ar.edu.itba.pod.services.SeatMapService;
+import ar.edu.itba.pod.server.exceptions.*;
 import ar.edu.itba.pod.utils.Pair;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 public class SeatAssignmentService implements ar.edu.itba.pod.services.SeatAssignmentService {
 
