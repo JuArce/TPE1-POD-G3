@@ -37,9 +37,6 @@ public class FlightsActionTest {
         catch (Exception e){
             fail("");
         }
-
-
-
     }
 
     @Test

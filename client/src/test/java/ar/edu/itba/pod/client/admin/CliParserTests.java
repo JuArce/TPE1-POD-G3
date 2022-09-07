@@ -38,7 +38,7 @@ public class CliParserTests {
     @ValueSource(strings = {"10.23.34.55:9999","1.2.3.5:9999", "10.23.34.55:999", "10.23.34.55:99", "10.23.34.55:9"})
     public void validServerAddress_ShouldSucceed(String serverAddress){
         // Arrange
-        var args = new String[]{"-DserverAddress=" + serverAddress, "-Daction=flights"};
+        var args = new String[]{"-DserverAddress=" + serverAddress, "-Daction=confirm", "-Dflight=AA123"};
 
         // Act
         var cli = cliParser.parse(args);
