@@ -21,5 +21,5 @@ public interface AdminService {
     FlightStatus getFlightStatus(String flightCode) throws RemoteException;
     void confirmFlight(String flightCode) throws RemoteException;
     void cancelFlight(String flightCode) throws RemoteException;
-    void rescheduleTickets();
+    ReticketingReport rescheduleTickets();
 }
