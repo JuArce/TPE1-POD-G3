@@ -1,6 +1,5 @@
 package ar.edu.itba.pod.server;
 
-import ar.edu.itba.pod.exceptions.*;
 import ar.edu.itba.pod.models.*;
 import ar.edu.itba.pod.server.exceptions.*;
 import ar.edu.itba.pod.utils.Pair;
@@ -11,11 +10,8 @@ import java.util.Optional;
 public class SeatAssignmentService implements ar.edu.itba.pod.services.SeatAssignmentService {
 
     List<Flight> flightList;
+//    todo levatar la clase de storage en vez de tener el list de flights
 
-    public static void SeatAssignmentService(){
-        // levantar archivo csv
-
-    }
     @Override
     public Boolean isSeatTaken(String flightCode, int row, char column) {
         return null;
