@@ -12,7 +12,7 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
 public class Client {
-    private static final Logger logger = LoggerFactory.getLogger(ar.edu.itba.pod.client.Client.class);
+    private static final Logger logger = LoggerFactory.getLogger(Client.class);
 
     public static void main(String[] args) {
         logger.info("AdminClient Starting ...");
