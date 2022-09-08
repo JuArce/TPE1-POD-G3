@@ -3,9 +3,10 @@ package ar.edu.itba.pod.models;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.util.Optional;
 
-public class Ticket {
+public class Ticket implements Serializable {
     @Setter
     private SeatLocation seatLocation;
     @Getter
