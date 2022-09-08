@@ -10,6 +10,7 @@ import ar.edu.itba.pod.utils.Pair;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
@@ -47,7 +48,7 @@ public class SeatMapServiceImplTest {
     }
 
     @Test
-    public void requestAllSeats(){
+    public void requestAllSeats() throws RemoteException {
         final Criteria criteria = new IdentityCriteria();
         String passenger = "juan";
         Ticket juanTicket = new Ticket("juan", SeatCategory.BUSINESS);
@@ -63,7 +64,7 @@ public class SeatMapServiceImplTest {
     }
 
     @Test
-    public void requestPerCategory(){
+    public void requestPerCategory() throws RemoteException {
         final Criteria criteria = new CategoryCriteria(SeatCategory.BUSINESS);
         String passenger = "juan";
         Ticket juanTicket = new Ticket("juan", SeatCategory.BUSINESS);
@@ -78,7 +79,7 @@ public class SeatMapServiceImplTest {
     }
 
     @Test
-    public void requestByRow(){
+    public void requestByRow() throws RemoteException {
         int row = 1;
         char col = 'A';
         String passenger = "juan";
