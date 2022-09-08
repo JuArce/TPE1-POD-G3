@@ -19,19 +19,24 @@ public class Plane {
         int currentRow = 0;
         for (Map.Entry<SeatCategory, Pair<Integer, Integer>> entry : seatsPerCategory.entrySet()) {
             for (int i = 0; i < entry.getValue().getFirst(); i++) {
-                this.rows[currentRow] = new RowDescription(entry.getValue().getSecond(), entry.getKey());
+                this.rows[currentRow] = new RowDescription(currentRow, entry.getValue().getSecond(), entry.getKey());
                 currentRow++;
             }
         }
     }
 
-    private static class RowDescription {
+    public static class RowDescription {
+
+        @Getter
+        private final int row;
+
         @Getter
         private final int columns;
         @Getter
         private final SeatCategory category;
 
-        public RowDescription(int columns, SeatCategory category) {
+        public RowDescription(int row, int columns, SeatCategory category) {
+            this.row = row;
             this.columns = columns;
             this.category = category;
         }
