@@ -5,6 +5,7 @@ import ar.edu.itba.pod.models.*;
 import ar.edu.itba.pod.models.criteria.Criteria;
 import ar.edu.itba.pod.services.SeatMapService;
 
+import java.rmi.RemoteException;
 import java.util.*;
 
 public class SeatMapServiceImpl implements SeatMapService {
@@ -25,7 +26,7 @@ public class SeatMapServiceImpl implements SeatMapService {
     }
 
     @Override
-    public List<SeatRow> getSeatMap(String flightCode, Criteria criteria) throws FlightDoesNotExistException {
+    public List<SeatRow> getSeatMap(String flightCode, Criteria criteria) throws RemoteException {
 
         //Primero encontrar el vuelo segun el string dado.
         Flight flight = flights.stream().filter(f -> f.getFlightCode().equals(flightCode)).findFirst().orElseThrow(FlightDoesNotExistException::new);

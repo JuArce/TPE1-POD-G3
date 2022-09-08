@@ -28,12 +28,13 @@ public class Server {
         List<Plane> planes = Collections.synchronizedList(new ArrayList<>());
         List<Flight> flights = Collections.synchronizedList(new ArrayList<>());
 
-//        var service = new AdminServiceImpl(planes, flights);
-        var service = new SeatMapServiceImpl(flights);
-        var remote = UnicastRemoteObject.exportObject(service,0);
+        var serviceAdmin = new AdminServiceImpl(planes, flights);
+        var serviceSeatMap = new SeatMapServiceImpl(flights);
+        var remoteAdmin = UnicastRemoteObject.exportObject(serviceAdmin,0);
+        var remoteSeatMap = UnicastRemoteObject.exportObject(serviceSeatMap,1);
 
         final Registry registry = LocateRegistry.getRegistry();
-//        registry.rebind("AdminService", remote); // bind, rebind, unbind
-        registry.rebind("SeatMapService", remote);
+        registry.rebind("AdminService", remoteAdmin); // bind, rebind, unbind
+        registry.rebind("SeatMapService", remoteSeatMap);
     }
 }
