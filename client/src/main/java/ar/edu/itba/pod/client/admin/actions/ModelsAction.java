@@ -1,7 +1,6 @@
 package ar.edu.itba.pod.client.admin.actions;
 
 import ar.edu.itba.pod.client.admin.CliParser;
-import ar.edu.itba.pod.exceptions.PlaneModelAlreadyExistsException;
 import ar.edu.itba.pod.models.SeatCategory;
 import ar.edu.itba.pod.services.AdminService;
 import ar.edu.itba.pod.utils.Pair;
@@ -10,14 +9,13 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.rmi.RemoteException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 
-public class ModelsAction {
+public class ModelsAction implements Runnable {
     private final Logger logger;
     private final AdminService service;
     private final CliParser.Arguments arguments;
@@ -34,15 +32,22 @@ public class ModelsAction {
         this.logger = logger;
     }
 
-    public void run() throws Exception {
+    public void run() {
 
 
-        var planeModels = Files
+        List<PlaneModel> planeModels;
+        try {
+            planeModels = Files
                     .readAllLines(Paths.get(arguments.getFilePath().get()))
                     .stream().skip(1)
-                    .map(t-> t.split(";"))
-                    .map(t-> new PlaneModel(t[0], t[1]))
+                    .map(t -> t.split(";"))
+                    .map(t -> new PlaneModel(t[0], t[1]))
                     .collect(Collectors.toList());
+        }
+        catch (IOException e) {
+            logger.error("Error reading file {}", arguments.getFilePath().get());
+            return;
+        }
 
         int addedPlaneModels = 0;
         for (var planeModel : planeModels) {
@@ -62,11 +67,11 @@ public class ModelsAction {
 
     private static class PlaneModel{
         private final String planeModelName;
-        private final Map<SeatCategory, Pair<Integer, Integer>> seatsPerCategory;
+        private final TreeMap<SeatCategory, Pair<Integer, Integer>> seatsPerCategory;
 
         private PlaneModel(String planeModelName, String seats) {
             this.planeModelName = planeModelName;
-            this.seatsPerCategory = new HashMap<>();
+            this.seatsPerCategory = new TreeMap<>();
 
             for (var section: seats.split(",")) {
                 var a = section.split("#");
@@ -80,7 +85,7 @@ public class ModelsAction {
             return planeModelName;
         }
 
-        public Map<SeatCategory, Pair<Integer, Integer>> getSeatsPerCategory() {
+        public TreeMap<SeatCategory, Pair<Integer, Integer>> getSeatsPerCategory() {
             return seatsPerCategory;
         }
 
