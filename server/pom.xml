@@ -23,6 +23,12 @@
          <!-- use 2.9.1 for Java 7 projects -->
          <version>3.23.1</version>
          <scope>test</scope>
+               </dependency>
+
+<dependency>
+         <groupId>org.projectlombok</groupId>
+         <artifactId>lombok</artifactId>
+         <scope>provided</scope>
       </dependency>
    </dependencies>
    <build>

@@ -1,42 +1,36 @@
 package ar.edu.itba.pod.models;
 
+import lombok.Getter;
+import lombok.Setter;
+
+import java.util.Optional;
+
 public class Ticket {
-    private Seat seat;
-    private final String flightCode;
+    @Setter
+    private SeatLocation seatLocation;
+    @Getter
     private final String passengerName;
+    @Getter
     private final SeatCategory seatCategory;
 
-    public Ticket(String flightCode, String passengerName, SeatCategory seatCategory) {
-        this.flightCode = flightCode;
-        this.passengerName = passengerName;
-        this.seatCategory = seatCategory;
-        this.seat = null;
-    }
-
-    public Ticket(ar.edu.itba.pod.models.Seat seat, String flightCode, String passengerName, SeatCategory seatCategory) {
-        this.seat = seat;
-        this.flightCode = flightCode;
+    public Ticket(String passengerName, SeatCategory seatCategory) {
         this.passengerName = passengerName;
         this.seatCategory = seatCategory;
     }
 
-    public String getFlightCode() {
-        return flightCode;
+    public Optional<SeatLocation> getSeatLocation() {
+        return Optional.ofNullable(seatLocation);
     }
 
-    public String getPassengerName() {
-        return passengerName;
-    }
+    public static class SeatLocation {
+        @Getter
+        private final int row;
+        @Getter
+        private final char column;
 
-    public SeatCategory getCategory() {
-        return seatCategory;
-    }
-
-    public Seat getSeat() {
-        return seat;
-    }
-
-    public void setSeat(ar.edu.itba.pod.models.Seat seat) {
-        this.seat = seat;
+        public SeatLocation(int row, char column) {
+            this.row = row;
+            this.column = column;
+        }
     }
 }
