@@ -3,7 +3,9 @@ package ar.edu.itba.pod.server;
 import ar.edu.itba.pod.models.Flight;
 import ar.edu.itba.pod.models.Plane;
 import ar.edu.itba.pod.server.services.AdminServiceImpl;
+import ar.edu.itba.pod.server.services.SeatMapServiceImpl;
 import ar.edu.itba.pod.services.AdminService;
+import ar.edu.itba.pod.services.SeatMapService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,10 +28,12 @@ public class Server {
         List<Plane> planes = Collections.synchronizedList(new ArrayList<>());
         List<Flight> flights = Collections.synchronizedList(new ArrayList<>());
 
-        var service = new AdminServiceImpl(planes, flights);
+//        var service = new AdminServiceImpl(planes, flights);
+        var service = new SeatMapServiceImpl(flights);
         var remote = UnicastRemoteObject.exportObject(service,0);
 
         final Registry registry = LocateRegistry.getRegistry();
-        registry.rebind("AdminService", remote); // bind, rebind, unbind
+//        registry.rebind("AdminService", remote); // bind, rebind, unbind
+        registry.rebind("SeatMapService", remote);
     }
 }
