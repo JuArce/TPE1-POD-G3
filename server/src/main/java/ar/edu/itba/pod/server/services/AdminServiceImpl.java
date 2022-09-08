@@ -49,7 +49,7 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public void rescheduleTickets() throws RemoteException {
-
+    public ReticketingReport rescheduleTickets() throws RemoteException {
+        return null;
     }
 }
