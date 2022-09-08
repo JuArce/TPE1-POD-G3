@@ -11,7 +11,7 @@ import ar.edu.itba.pod.utils.Pair;
 
 public interface AdminService extends Remote {
 
-    void addPlane(String planeModelName, Map<SeatCategory, Pair<Integer, Integer>> seatsPerCategory)
+    void addPlane(String planeModelName, TreeMap<SeatCategory, Pair<Integer, Integer>> seatsPerCategory)
             throws RemoteException;
 
     void addFlight(String planeModelName, String flightCode, String airportCode, List<Ticket> tickets)

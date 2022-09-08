@@ -26,7 +26,7 @@ public class Server {
         List<Plane> planes = Collections.synchronizedList(new ArrayList<>());
         List<Flight> flights = Collections.synchronizedList(new ArrayList<>());
 
-        var service = new AdminServiceImpl();
+        var service = new AdminServiceImpl(planes, flights);
         var remote = UnicastRemoteObject.exportObject(service,0);
 
         final Registry registry = LocateRegistry.getRegistry();
