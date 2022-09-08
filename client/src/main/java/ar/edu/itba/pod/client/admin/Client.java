@@ -27,7 +27,7 @@ public class Client {
         try
         {
             final Registry registry = LocateRegistry.getRegistry(arguments.getServerAddress());
-            final AdminService service = (AdminService) registry.lookup(AdminService.getServiceName());
+            final AdminService service = (AdminService) registry.lookup("AdminService");
 
             switch (arguments.getAction()){
                 case MODELS -> new ModelsAction(service,arguments).run();
@@ -35,6 +35,7 @@ public class Client {
                 case CONFIRM -> new ConfirmAction(service,arguments).run();
                 case CANCEL -> new CancelAction(service,arguments).run();
                 case FLIGHTS -> new FlightsAction(service,arguments).run();
+                case RETICKETING -> new ReticketingAction(service,arguments).run();
             }
 
 
