@@ -24,12 +24,15 @@ public class Plane {
         }
         this.rows = new ArrayList<>(rows);
 
+        //row counter
+        int j = 1;
+
         for (Map.Entry<SeatCategory, Pair<Integer, Integer>> entry : seatsPerCategory.entrySet()) {
             if (entry.getValue().getFirst() <= 0 || entry.getValue().getSecond() <= 0) {
                 throw new EmptySeatDistributionException();
             }
             for (int i = 0; i < entry.getValue().getFirst(); i++) {
-                this.rows.add(new RowDescription(i,entry.getValue().getSecond(), entry.getKey()));
+                this.rows.add(new RowDescription(j++,entry.getValue().getSecond(), entry.getKey()));
             }
         }
     }

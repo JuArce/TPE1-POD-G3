@@ -38,7 +38,8 @@ public class SeatMapServiceImpl implements SeatMapService {
         final Map<Ticket.SeatLocation, String> assignees = new HashMap<>();
 
         flight.getTickets().stream()
-                .filter( t -> t.getSeatLocation().isPresent()).forEach( t -> assignees.put(t.getSeatLocation().orElse(null),t.getPassengerName()));
+                .filter( t -> t.getSeatLocation().isPresent()).
+                forEach( t -> assignees.put(t.getSeatLocation().orElse(null),t.getPassengerName()));
 
         //Creamos las rows
 
@@ -49,7 +50,7 @@ public class SeatMapServiceImpl implements SeatMapService {
         List<SeatRow> seatRows = new ArrayList<>();
         rawRows.forEach(r -> seatRows.add(new SeatRow(r.getRow(), createNewSeats(r.getColumns()), r.getCategory())));
 
-        assignees.forEach( (k,v)-> seatRows.get(k.getRow()).getSeats()[(int) k.getColumn()-'A'].setPassenger(v));
+        assignees.forEach( (k,v)-> seatRows.get(k.getRow() - 1).getSeats()[(int) k.getColumn()-'A'].setPassenger(v));
 
         return criteria.filter(seatRows);
     }
