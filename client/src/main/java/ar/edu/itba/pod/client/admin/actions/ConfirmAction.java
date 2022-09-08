@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 
 import java.rmi.RemoteException;
 
-public class ConfirmAction {
+public class ConfirmAction implements Runnable {
 
     private final AdminService service;
     private final CliParser.Arguments arguments;
@@ -24,6 +24,7 @@ public class ConfirmAction {
         this.logger = logger;
     }
 
+    @Override
     public void run() {
         var flightCode = arguments.getFlightCode().get();
 

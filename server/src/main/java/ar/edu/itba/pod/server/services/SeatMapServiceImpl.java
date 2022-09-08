@@ -42,7 +42,7 @@ public class SeatMapServiceImpl implements SeatMapService {
 
         //Creamos las rows
 
-        final List<Plane.RowDescription> rawRows = List.of(flight.getPlane().getRows());
+        final List<Plane.RowDescription> rawRows = flight.getPlane().getRows();
 
         //Creamos la coleccion de filas con los seats, chequeando cuando corresponde que esten asignados
 
