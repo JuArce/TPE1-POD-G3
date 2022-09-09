@@ -53,7 +53,7 @@ public class Flight {
     public int getFreeSeats(SeatCategory maxCategory) {
         int freeSeats = 0;
         for (SeatCategory category : SeatCategory.values()) {
-            if (category.compareTo(maxCategory) <= 0) {
+            if (category.compareTo(maxCategory) >= 0) {
                 freeSeats += plane.getSeatsDistribution().get(category);
             }
         }
