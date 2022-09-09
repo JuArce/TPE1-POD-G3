@@ -33,12 +33,12 @@ public class Flight {
 
         Map<SeatCategory, Integer> seats = new TreeMap<>();
         for (SeatCategory category : SeatCategory.values()) {
-            if (category.compareTo(maxCategory) <= 0) {
-                seats.put(category, plane.getSeatsDistribution().get(category));
+            if (category.compareTo(maxCategory) >= 0) {
+                seats.put(category, plane.getSeatsDistribution().getOrDefault(category, 0));
             }
         }
 
-        tickets.stream()
+        this.tickets.stream()
                 .filter(t -> t.getSeatLocation().isPresent())
                 .forEach(t -> seats.put(t.getSeatCategory(), seats.get(t.getSeatCategory()) - 1));
 
