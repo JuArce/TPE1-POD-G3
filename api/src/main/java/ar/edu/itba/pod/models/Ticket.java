@@ -19,6 +19,12 @@ public class Ticket {
         this.seatCategory = seatCategory;
     }
 
+    public Ticket(String passengerName, SeatCategory seatCategory,int i, char a) {
+        this.passengerName = passengerName;
+        this.seatCategory = seatCategory;
+        this.seatLocation = new SeatLocation(i,a);
+    }
+
     public Optional<SeatLocation> getSeatLocation() {
         return Optional.ofNullable(seatLocation);
     }
