@@ -60,7 +60,7 @@ public class Flight {
 
         freeSeats -= tickets.stream()
                 .filter(t -> t.getSeatLocation().isPresent())
-                .filter(t -> t.getSeatCategory().compareTo(maxCategory) <= 0)
+                .filter(t -> t.getSeatCategory().compareTo(maxCategory) >= 0)
                 .count();
 
         return freeSeats;
