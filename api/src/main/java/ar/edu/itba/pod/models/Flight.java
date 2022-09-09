@@ -1,11 +1,12 @@
 package ar.edu.itba.pod.models;
 
-import ar.edu.itba.pod.utils.Pair;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class Flight implements Serializable {
     @Getter @Setter
