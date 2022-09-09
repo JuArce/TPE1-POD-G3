@@ -3,6 +3,7 @@ package ar.edu.itba.pod.models;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Objects;
 import java.util.Optional;
 
 public class Ticket {
@@ -20,6 +21,19 @@ public class Ticket {
 
     public Optional<SeatLocation> getSeatLocation() {
         return Optional.ofNullable(seatLocation);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Ticket ticket = (Ticket) o;
+        return Objects.equals(seatLocation, ticket.seatLocation) && passengerName.equals(ticket.passengerName) && seatCategory == ticket.seatCategory;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(seatLocation, passengerName, seatCategory);
     }
 
     public static class SeatLocation {
