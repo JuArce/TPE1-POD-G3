@@ -3,6 +3,7 @@ package ar.edu.itba.pod.server;
 import ar.edu.itba.pod.models.Flight;
 import ar.edu.itba.pod.models.Plane;
 import ar.edu.itba.pod.server.services.AdminServiceImpl;
+import ar.edu.itba.pod.server.services.NotificationServiceImpl;
 import ar.edu.itba.pod.server.services.SeatMapServiceImpl;
 import ar.edu.itba.pod.services.AdminService;
 import ar.edu.itba.pod.services.SeatMapService;
@@ -30,11 +31,14 @@ public class Server {
 
         var serviceAdmin = new AdminServiceImpl(planes, flights);
         var serviceSeatMap = new SeatMapServiceImpl(flights);
+        var notificationService = new NotificationServiceImpl();
         var remoteAdmin = UnicastRemoteObject.exportObject(serviceAdmin,0);
-        var remoteSeatMap = UnicastRemoteObject.exportObject(serviceSeatMap,1);
+        var remoteSeatMap = UnicastRemoteObject.exportObject(serviceSeatMap,0);
+        var remoteNotification = UnicastRemoteObject.exportObject(notificationService,0);
 
         final Registry registry = LocateRegistry.getRegistry();
         registry.rebind("AdminService", remoteAdmin); // bind, rebind, unbind
         registry.rebind("SeatMapService", remoteSeatMap);
+        registry.rebind("NotificationService", remoteNotification);
     }
 }
