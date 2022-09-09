@@ -1,7 +1,5 @@
 package ar.edu.itba.pod.client.notifications;
 
-import ar.edu.itba.pod.client.admin.actions.ActionType;
-import ar.edu.itba.pod.utils.Pair;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.cli.*;
@@ -9,7 +7,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Optional;
-import java.util.regex.Pattern;
 
 public class CliParser {
     private final CommandLineParser parser = new DefaultParser();
@@ -34,7 +31,6 @@ public class CliParser {
     private Optional<Arguments> GetArguments(CommandLine cmd) {
         var args = new Arguments();
 
-        // Set server address
         args.setServerAddress(cmd.getOptionValue("DserverAddress"));
         args.setFlight(cmd.getOptionValue("Dflight"));
         args.setPassenger(cmd.getOptionValue("Dpassenger"));
