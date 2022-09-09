@@ -18,7 +18,12 @@ public class MoveAction implements Runnable {
 
     @Override
     public void run() {
-        // TODO: Implementar
-
+        var flightCode = arguments.getFlightCode();
+        try {
+            service.changeSeat(flightCode, arguments.getPassengerName(), arguments.getRow(), arguments.getCol().charAt(0));
+            logger.info("Seat changed successfully.");
+        } catch (Exception e) {
+            logger.error("Cannot move passenger from flight {}", flightCode);
+        }
     }
 }

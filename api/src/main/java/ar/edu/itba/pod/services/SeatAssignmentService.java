@@ -11,5 +11,4 @@ public interface SeatAssignmentService {
     void changeSeat(String flightCode, String passenger, int row, char column) throws Exception;
     List<Flight> getAlternativeFlights(String flightCode, String passenger);
     void changeTicket(String passenger, String flightCode, String newFlightCode);
-
 }
