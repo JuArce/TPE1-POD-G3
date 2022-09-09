@@ -20,12 +20,12 @@ public class CliParserTests {
     }
 
     @ParameterizedTest()
-    @ValueSource(strings = {"","1..1.1:9999","11.11.11.11","11.123.11.11:9999","hola","11.11.11.11:98900",
+    @ValueSource(strings = {"","1..1.1:9999","11.11.11.11","11.1234.11.11:9999","hola","11.11.11.11:98900",
             "11:99","11.11:999","11.11.11.11:10.10"
     })
     public void invalidServerAddress_ShouldFail(String serverAddress){
         // Arrange
-        var args = new String[]{"-DserverAddress=" + serverAddress, "-Daction=flights"};
+        var args = new String[]{"-DserverAddress=" + serverAddress, "-Daction=reticketing"};
 
         // Act
         var cli = cliParser.parse(args);
@@ -35,7 +35,10 @@ public class CliParserTests {
     }
 
     @ParameterizedTest()
-    @ValueSource(strings = {"10.23.34.55:9999","1.2.3.5:9999", "10.23.34.55:999", "10.23.34.55:99", "10.23.34.55:9"})
+    @ValueSource(strings = {
+            "10.23.34.55:9999","1.2.3.5:9999", "10.23.34.55:999", "10.23.34.55:99", "10.23.34.55:9",
+            "localhost:1099"
+    })
     public void validServerAddress_ShouldSucceed(String serverAddress){
         // Arrange
         var args = new String[]{"-DserverAddress=" + serverAddress, "-Daction=confirm", "-Dflight=AA123"};
@@ -45,7 +48,8 @@ public class CliParserTests {
 
         // Assert
         assertThat(cli.isPresent()).isTrue();
-        assertThat(cli.get().getServerAddress()).isEqualTo(serverAddress);
+        assertThat(cli.get().getHost()).isEqualTo(serverAddress.split(":")[0]);
+        assertThat(cli.get().getPort()).isEqualTo(Integer.parseInt(serverAddress.split(":")[1]));
     }
 
     @Test()
@@ -76,7 +80,7 @@ public class CliParserTests {
     @ValueSource(strings = {
             "reticketing", "Reticketing"
     })
-    public void validAction_ShouldSucceed(String action) {
+    public void parseReticketing_ShouldSucceed(String action) {
         // Arrange
         var args = new String[]{"-DserverAddress=10.23.34.55:9999", "-Daction=" + action};
 
@@ -85,7 +89,7 @@ public class CliParserTests {
 
         // Assert
         assertThat(cli.isPresent()).isTrue();
-        assertThat(cli.get().getAction()).isEqualTo(ActionType.valueOf(action.toUpperCase()));
+        assertThat(cli.get().getAction()).isEqualTo(ActionType.RETICKETING);
     }
 
     @ParameterizedTest

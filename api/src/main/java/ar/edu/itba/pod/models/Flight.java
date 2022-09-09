@@ -4,12 +4,11 @@ import ar.edu.itba.pod.utils.Pair;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.io.Serializable;
+import java.util.List;
 
-public class Flight {
-    @Getter
-    @Setter
+public class Flight implements Serializable {
+    @Getter @Setter
     private FlightStatus status;
     @Getter
     private final String airportCode;

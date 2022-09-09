@@ -4,13 +4,14 @@ import ar.edu.itba.pod.exceptions.EmptySeatDistributionException;
 import ar.edu.itba.pod.utils.Pair;
 import lombok.Getter;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
 
-public class Plane {
+public class Plane implements Serializable {
     @Getter
     private final String modelName;
     @Getter
@@ -27,12 +28,15 @@ public class Plane {
         }
         this.rows = new ArrayList<>(rows);
 
+        //row counter
+        int j = 1;
+
         for (Map.Entry<SeatCategory, Pair<Integer, Integer>> entry : seatsPerCategory.entrySet()) {
             if (entry.getValue().getFirst() <= 0 || entry.getValue().getSecond() <= 0) {
                 throw new EmptySeatDistributionException();
             }
             for (int i = 0; i < entry.getValue().getFirst(); i++) {
-                this.rows.add(new RowDescription(entry.getValue().getSecond(), entry.getKey()));
+                this.rows.add(new RowDescription(j++,entry.getValue().getSecond(), entry.getKey()));
             }
         }
 
@@ -57,11 +61,14 @@ public class Plane {
 
     public static class RowDescription {
         @Getter
+        private final int row;
+        @Getter
         private final int columns;
         @Getter
         private final SeatCategory category;
 
-        public RowDescription(int columns, SeatCategory category) {
+        public RowDescription(int row, int columns, SeatCategory category) {
+            this.row = row;
             this.columns = columns;
             this.category = category;
         }

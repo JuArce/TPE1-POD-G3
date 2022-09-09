@@ -1,6 +1,7 @@
 package ar.edu.itba.pod.client.admin.actions;
 
 import ar.edu.itba.pod.client.admin.CliParser;
+
 import ar.edu.itba.pod.models.SeatCategory;
 import ar.edu.itba.pod.services.AdminService;
 import ar.edu.itba.pod.utils.Pair;
@@ -32,9 +33,8 @@ public class ModelsAction implements Runnable {
         this.logger = logger;
     }
 
+    @Override
     public void run() {
-
-
         List<PlaneModel> planeModels;
         try {
             planeModels = Files
@@ -67,6 +67,7 @@ public class ModelsAction implements Runnable {
 
     private static class PlaneModel{
         private final String planeModelName;
+
         private final TreeMap<SeatCategory, Pair<Integer, Integer>> seatsPerCategory;
 
         private PlaneModel(String planeModelName, String seats) {
