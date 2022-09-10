@@ -18,6 +18,12 @@ public class ChangeTicketAction implements Runnable {
 
     @Override
     public void run() {
-        // TODO: Implementar
+        var flightCode = arguments.getFlightCode();
+        try {
+            service.changeTicket(arguments.getPassengerName(), arguments.getOriginalFlightCode(), arguments.getFlightCode());
+            logger.info("Ticket for flight {} changed successfully.", flightCode);
+        } catch (Exception e) {
+            logger.error("Error while changing ticket in flight {}", flightCode);
+        }
     }
 }
