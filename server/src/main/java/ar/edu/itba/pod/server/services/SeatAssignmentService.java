@@ -113,8 +113,10 @@ public class SeatAssignmentService implements ar.edu.itba.pod.services.SeatAssig
 
 
     @Override
-    public List<Flight> getAlternativeFlights(String flightCode, String passenger) {
-        return null;
+    public List<Flight> getAlternativeFlights(String flightCode, String passenger) throws Exception {
+        Flight flight = validateFlight(flightCode);
+        Ticket ticket = validatePassenger(passenger, flight);
+        return AlternativeFlights.getAlternativeFlights(flightList,ticket , passenger);
     }
 
     @Override
