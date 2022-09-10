@@ -2,6 +2,7 @@ package ar.edu.itba.pod.server.services;
 
 import ar.edu.itba.pod.exceptions.*;
 import ar.edu.itba.pod.models.*;
+import ar.edu.itba.pod.server.notifications.EventsManagerImpl;
 import ar.edu.itba.pod.services.AdminService;
 import ar.edu.itba.pod.utils.Pair;
 
@@ -16,10 +17,12 @@ public class AdminServiceImpl implements AdminService {
 
     private final List<Plane> planes;
     private final List<Flight> flights;
+    private final EventsManagerImpl eventsManager;
 
-    public AdminServiceImpl(List<Plane> planes, List<Flight> flights) {
+    public AdminServiceImpl(List<Plane> planes, List<Flight> flights, EventsManagerImpl eventsManager) {
         this.planes = planes;
         this.flights = flights;
+        this.eventsManager = eventsManager;
     }
 
     @Override
