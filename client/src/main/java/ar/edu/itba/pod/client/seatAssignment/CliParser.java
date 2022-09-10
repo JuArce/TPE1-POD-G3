@@ -57,7 +57,7 @@ public class CliParser {
                     args.setCol(cmd.getOptionValue("Dcol"));
                     return Optional.of(args);
                 } else {
-                    logger.error("The flight code is not valid!");
+                    logger.error("Invalid parameters! Please include the correct flight code, row and column");
                     return Optional.empty();
                 }
             }
@@ -69,7 +69,7 @@ public class CliParser {
                     args.setCol(cmd.getOptionValue("Dcol"));
                     return Optional.of(args);
                 } else {
-                    logger.error("The flight code, passenger name, row or column are not valid!");
+                    logger.error("Invalid parameters! Please include the correct flight code, passenger name, row and column");
                     return Optional.empty();
                 }
             }
@@ -81,7 +81,7 @@ public class CliParser {
                     args.setCol(cmd.getOptionValue("Dcol"));
                     return Optional.of(args);
                 } else {
-                    logger.error("The flight code, passenger name or original flight code are not valid!");
+                    logger.error("Invalid parameters! Please include the correct flight code, passenger name, row and column");
                     return Optional.empty();
                 }
             }
@@ -91,7 +91,7 @@ public class CliParser {
                     args.setPassengerName(cmd.getOptionValue("Dpassenger"));
                     return Optional.of(args);
                 } else {
-                    logger.error("The flight code or passenger name are not valid!");
+                    logger.error("Invalid parameters! Please include the correct flight code and passenger name");
                     return Optional.empty();
                 }
             }
@@ -102,7 +102,7 @@ public class CliParser {
                     args.setOriginalFlightCode(cmd.getOptionValue("DoriginalFlight"));
                     return Optional.of(args);
                 } else {
-                    logger.error("The flight code, passenger name or original flight code are not valid!");
+                    logger.error("Invalid parameters! Please include the correct new flight code, passenger name and original flight code");
                     return Optional.empty();
                 }
             }
