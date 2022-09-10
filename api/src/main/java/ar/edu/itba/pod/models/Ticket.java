@@ -20,8 +20,27 @@ public class Ticket implements Serializable {
         this.seatCategory = seatCategory;
     }
 
+    public Ticket(String passengerName, SeatCategory seatCategory,int i, char a) {
+        this.passengerName = passengerName;
+        this.seatCategory = seatCategory;
+        this.seatLocation = new SeatLocation(i,a);
+    }
+
     public Optional<SeatLocation> getSeatLocation() {
         return Optional.ofNullable(seatLocation);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Ticket ticket = (Ticket) o;
+        return Objects.equals(seatLocation, ticket.seatLocation) && passengerName.equals(ticket.passengerName) && seatCategory == ticket.seatCategory;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(seatLocation, passengerName, seatCategory);
     }
 
     public static class SeatLocation {
@@ -46,6 +65,11 @@ public class Ticket implements Serializable {
         @Override
         public int hashCode() {
             return Objects.hash(row, column);
+        }
+
+        @Override
+        public String toString() {
+            return String.format("%d%c", row, column);
         }
     }
 }
