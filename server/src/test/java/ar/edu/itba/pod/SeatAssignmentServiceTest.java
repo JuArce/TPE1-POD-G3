@@ -752,7 +752,7 @@ public class SeatAssignmentServiceTest {
         Flight flight2 = new Flight(FlightStatus.SCHEDULED, "AC1234", "FC1235", plane2, tickets2);
         flights.add(flight);
         flights.add(flight2);
-        
+
 
         seatAssignmentService = new SeatAssignmentService(flights);
 
@@ -766,6 +766,42 @@ public class SeatAssignmentServiceTest {
         }
         assertEquals(flight.getTickets().size(), 0);
         assertEquals(flight2.getTickets().size(), 1);
+    }
+
+    @Test
+    public void changeTicket_WithNotAlternativeFlights_ShouldThrowFlightDoesNotExistException(){
+
+//        Arrange
+        List<Ticket> tickets =new ArrayList<>();
+        List<Ticket> tickets2 =new ArrayList<>();
+        Ticket ticket = new Ticket("test-name", SeatCategory.ECONOMY);
+        ticket.setSeatLocation(new Ticket.SeatLocation(4, 'b'));
+        tickets.add(ticket);
+
+        TreeMap<SeatCategory, Pair<Integer, Integer>> seatsPerCategory = new TreeMap<>();
+        seatsPerCategory.put(SeatCategory.ECONOMY, new Pair<>(4, 2));
+
+        Plane plane = new Plane("test-model" ,seatsPerCategory);
+        Plane plane2 = new Plane("test-model" ,seatsPerCategory);
+
+        List<Flight> flights = new ArrayList<>();
+        Flight flight = new Flight(FlightStatus.SCHEDULED, "AC1234", "FC1234", plane, tickets);
+        Flight flight2 = new Flight(FlightStatus.SCHEDULED, "AC1235", "FC1235", plane2, tickets2);
+        flights.add(flight);
+        flights.add(flight2);
+
+
+        seatAssignmentService = new SeatAssignmentService(flights);
+
+//        Act
+        try {
+            seatAssignmentService.changeTicket("test-name", "FC1234" ,"FC1235");
+//            Assert
+            fail();
+        }catch (Exception e) {
+
+            assertEquals("FlightDoesNotExistException", e.getMessage());
+        }
     }
 
    
