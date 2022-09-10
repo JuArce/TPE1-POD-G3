@@ -43,10 +43,11 @@ public class EventsManagerImpl implements EventsManager {
     }
 
     @Override
-    public void notifyFlightCancellation(String passengerName, String flightCode, String destination, Ticket.SeatLocation seat, SeatCategory category) throws RemoteException {
+    public void notifyFlightCancellation(Flight flight) throws RemoteException {
         for (PassengerSubscriber p : this.passengerSubscribers) {
-            if (p.getPassengerName().equals(passengerName) && p.getFlightCode().equals(flightCode)) {
-                p.getPassengerNotifier().notifyFlightCancellation(flightCode, destination, seat, category);
+            if (p.getFlightCode().equals(flight.getFlightCode())) {
+                Ticket ticket = flight.getTickets().stream().filter(t -> t.getPassengerName().equals(p.getPassengerName())).findFirst().orElseThrow(PassengerNotExistException::new);
+                p.getPassengerNotifier().notifyFlightCancellation(flight.getFlightCode(), flight.getAirportCode(), ticket.getSeatLocation().orElse(null), ticket.getSeatCategory());
             }
         }
     }

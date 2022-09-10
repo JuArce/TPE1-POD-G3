@@ -59,7 +59,8 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public void cancelFlight(String flightCode) throws RemoteException {
-        setFlightStatus(flightCode, FlightStatus.CANCELLED);
+        Flight flight = setFlightStatus(flightCode, FlightStatus.CANCELLED);
+        this.eventsManager.notifyFlightCancellation(flight);
     }
 
     private Flight setFlightStatus(String flightCode, FlightStatus status) {

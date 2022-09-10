@@ -14,7 +14,7 @@ public interface EventsManager {
 
     void notifySeatChange(String passengerName, String flightCode, String destination, Ticket.SeatLocation oldSeat, SeatCategory oldCategory, Ticket.SeatLocation newSeat, SeatCategory newCategory) throws RemoteException;
 
-    void notifyFlightCancellation(String passengerName, String flightCode, String destination, Ticket.SeatLocation seat, SeatCategory category) throws RemoteException;
+    void notifyFlightCancellation(Flight flight) throws RemoteException;
 
     void notifyFlightChange(String passengerName, String oldFlightCode, String newFlightCode, String destination) throws RemoteException;
 
