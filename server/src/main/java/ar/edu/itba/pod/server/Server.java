@@ -5,6 +5,7 @@ import ar.edu.itba.pod.models.Plane;
 import ar.edu.itba.pod.server.notifications.EventsManagerImpl;
 import ar.edu.itba.pod.server.services.AdminServiceImpl;
 import ar.edu.itba.pod.server.services.NotificationServiceImpl;
+import ar.edu.itba.pod.server.services.SeatAssignmentService;
 import ar.edu.itba.pod.server.services.SeatMapServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,14 +28,17 @@ public class Server {
         EventsManagerImpl eventsManager = new EventsManagerImpl();
 
         var serviceAdmin = new AdminServiceImpl(planes, flights, eventsManager);
+        var serviceSeatAssignment = new SeatAssignmentService(flights, eventsManager);
         var serviceSeatMap = new SeatMapServiceImpl(flights);
-        var notificationService = new NotificationServiceImpl(flights, eventsManager);
+        var serviceNotification = new NotificationServiceImpl(flights, eventsManager);
         var remoteAdmin = UnicastRemoteObject.exportObject(serviceAdmin,0);
+        var remoteSeatAssignment = UnicastRemoteObject.exportObject(serviceSeatAssignment,0);
         var remoteSeatMap = UnicastRemoteObject.exportObject(serviceSeatMap,0);
-        var remoteNotification = UnicastRemoteObject.exportObject(notificationService,0);
+        var remoteNotification = UnicastRemoteObject.exportObject(serviceNotification,0);
 
         final Registry registry = LocateRegistry.getRegistry();
         registry.rebind("AdminService", remoteAdmin); // bind, rebind, unbind
+        registry.rebind("SeatAssignmentService", remoteSeatAssignment);
         registry.rebind("SeatMapService", remoteSeatMap);
         registry.rebind("NotificationService", remoteNotification);
     }
