@@ -57,7 +57,7 @@ public class EventsManagerImpl implements EventsManager {
         for (PassengerSubscriber p : this.passengerSubscribers) {
             if (p.getFlightCode().equals(oldFlight.getFlightCode()) && p.getPassengerName().equals(passengerName)) {
                 p.getPassengerNotifier().notifyFlightChange(oldFlight.getFlightCode(), newFlight.getFlightCode(), newFlight.getAirportCode());
-                //TODO change flight code in passenger subscriber ???
+                p.setFlightCode(newFlight.getFlightCode());
             }
         }
     }
