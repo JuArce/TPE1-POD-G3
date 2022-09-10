@@ -1,6 +1,8 @@
 package ar.edu.itba.pod.server.notifications;
 
+import ar.edu.itba.pod.exceptions.PassengerNotExistException;
 import ar.edu.itba.pod.interfaces.PassengerNotifier;
+import ar.edu.itba.pod.models.Flight;
 import ar.edu.itba.pod.models.SeatCategory;
 import ar.edu.itba.pod.models.Ticket;
 
@@ -59,10 +61,11 @@ public class EventsManagerImpl implements EventsManager {
     }
 
     @Override
-    public void notifyFlightConfirmation(String passengerName, String flightCode, String destination, Ticket.SeatLocation seat, SeatCategory category) throws RemoteException {
+    public void notifyFlightConfirmation(Flight flight) throws RemoteException {
         for (PassengerSubscriber p : this.passengerSubscribers) {
-            if (p.getPassengerName().equals(passengerName) && p.getFlightCode().equals(flightCode)) {
-                p.getPassengerNotifier().notifyFlightConfirmation(flightCode, destination, seat, category);
+            if (p.getFlightCode().equals(flight.getFlightCode())) {
+                Ticket ticket = flight.getTickets().stream().filter(t -> t.getPassengerName().equals(p.getPassengerName())).findFirst().orElseThrow(PassengerNotExistException::new);
+                p.getPassengerNotifier().notifyFlightConfirmation(flight.getFlightCode(), flight.getAirportCode(), ticket.getSeatLocation().orElse(null), ticket.getSeatCategory());
             }
         }
     }

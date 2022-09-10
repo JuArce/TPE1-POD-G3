@@ -53,7 +53,8 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public void confirmFlight(String flightCode) throws RemoteException {
-        setFlightStatus(flightCode, FlightStatus.CONFIRMED);
+        Flight flight = setFlightStatus(flightCode, FlightStatus.CONFIRMED);
+        this.eventsManager.notifyFlightConfirmation(flight);
     }
 
     @Override
@@ -61,12 +62,13 @@ public class AdminServiceImpl implements AdminService {
         setFlightStatus(flightCode, FlightStatus.CANCELLED);
     }
 
-    private void setFlightStatus(String flightCode, FlightStatus status) {
+    private Flight setFlightStatus(String flightCode, FlightStatus status) {
         Flight flight = this.flights.stream().filter(f -> f.getFlightCode().equals(flightCode)).findFirst().orElseThrow(FlightCodeNotExistException::new);
         if (!flight.getStatus().equals(FlightStatus.SCHEDULED)) {
             throw new FlightStatusNotPendingException();
         }
         flight.setStatus(status);
+        return flight;
     }
 
     @Override

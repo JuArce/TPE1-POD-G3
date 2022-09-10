@@ -1,6 +1,7 @@
 package ar.edu.itba.pod.server.notifications;
 
 import ar.edu.itba.pod.interfaces.PassengerNotifier;
+import ar.edu.itba.pod.models.Flight;
 import ar.edu.itba.pod.models.SeatCategory;
 import ar.edu.itba.pod.models.Ticket;
 
@@ -17,5 +18,5 @@ public interface EventsManager {
 
     void notifyFlightChange(String passengerName, String oldFlightCode, String newFlightCode, String destination) throws RemoteException;
 
-    void notifyFlightConfirmation(String passengerName, String flightCode, String destination, Ticket.SeatLocation seat, SeatCategory category) throws RemoteException;
+    void notifyFlightConfirmation(Flight flight) throws RemoteException;
 }
