@@ -25,19 +25,19 @@ public class EventsManagerImpl implements EventsManager {
     }
 
     @Override
-    public void notifySeatAssignment(String passengerName, String flightCode, String destination, Ticket.SeatLocation seat, SeatCategory category) throws RemoteException {
-        for (PassengerSubscriber p : this.passengerSubscribers) {
-            if (p.getPassengerName().equals(passengerName) && p.getFlightCode().equals(flightCode)) {
-                p.getPassengerNotifier().notifySeatAssignment(flightCode, destination, seat, category);
+    public void notifySeatAssignment(Flight flight, Ticket ticket) throws RemoteException {
+        for (PassengerSubscriber passengerSubscriber : passengerSubscribers) {
+            if (passengerSubscriber.getFlightCode().equals(flight.getFlightCode()) && passengerSubscriber.getPassengerName().equals(ticket.getPassengerName())) {
+                passengerSubscriber.getPassengerNotifier().notifySeatAssignment(flight.getFlightCode(), flight.getAirportCode(), ticket.getSeatLocation().orElse(null), ticket.getSeatCategory());
             }
         }
     }
 
     @Override
-    public void notifySeatChange(String passengerName, String flightCode, String destination, Ticket.SeatLocation oldSeat, SeatCategory oldCategory, Ticket.SeatLocation newSeat, SeatCategory newCategory) throws RemoteException {
-        for (PassengerSubscriber p : this.passengerSubscribers) {
-            if (p.getPassengerName().equals(passengerName) && p.getFlightCode().equals(flightCode)) {
-                p.getPassengerNotifier().notifySeatChange(flightCode, destination, oldSeat, oldCategory, newSeat, newCategory);
+    public void notifySeatChange(Flight flight,Ticket.SeatLocation oldSeat, SeatCategory oldCategory, Ticket ticket) throws RemoteException {
+        for (PassengerSubscriber passengerSubscriber : passengerSubscribers) {
+            if (passengerSubscriber.getFlightCode().equals(flight.getFlightCode()) && passengerSubscriber.getPassengerName().equals(ticket.getPassengerName())) {
+                passengerSubscriber.getPassengerNotifier().notifySeatChange(flight.getFlightCode(), flight.getAirportCode(), oldSeat, oldCategory, ticket.getSeatLocation().orElse(null), ticket.getSeatCategory());
             }
         }
     }

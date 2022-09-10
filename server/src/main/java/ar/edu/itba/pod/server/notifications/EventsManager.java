@@ -10,9 +10,9 @@ import java.rmi.RemoteException;
 public interface EventsManager {
     void addPassengerSubscriber(String passengerName, String flightCode, String destination, PassengerNotifier passengerNotifier) throws RemoteException;
 
-    void notifySeatAssignment(String passengerName, String flightCode, String destination, Ticket.SeatLocation seat, SeatCategory category) throws RemoteException;
+    void notifySeatAssignment(Flight flight, Ticket ticket) throws RemoteException; //TODO define parameters
 
-    void notifySeatChange(String passengerName, String flightCode, String destination, Ticket.SeatLocation oldSeat, SeatCategory oldCategory, Ticket.SeatLocation newSeat, SeatCategory newCategory) throws RemoteException;
+    void notifySeatChange(Flight flight,Ticket.SeatLocation oldSeat, SeatCategory oldCategory, Ticket ticket) throws RemoteException; //TODO define parameters
 
     void notifyFlightCancellation(Flight flight) throws RemoteException;
 
