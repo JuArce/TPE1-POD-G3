@@ -18,6 +18,15 @@ public class AssignAction implements Runnable {
 
     @Override
     public void run() {
-        // TODO: Implementar
+        var flightCode = arguments.getFlightCode();
+        var passengerName = arguments.getPassengerName();
+        var row = arguments.getRow();
+        var col = arguments.getCol().charAt(0);
+        try {
+            service.assignSeat(flightCode, passengerName, row, col);
+            logger.info("Seat {}{} successfully assigned to passenger {} in flight {}", row, col, passengerName, flightCode);
+        } catch (Exception e) {
+            logger.error("Cannot assign seat {}{} for flight {} and passenger {}", row, col, flightCode, passengerName);
+        }
     }
 }
