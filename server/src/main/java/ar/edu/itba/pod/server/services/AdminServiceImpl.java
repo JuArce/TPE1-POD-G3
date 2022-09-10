@@ -99,20 +99,7 @@ public class AdminServiceImpl implements AdminService {
     }
 
     private List<Flight> getAlternativeFlights(Ticket ticket, String airportCode) {
-        return this.flights.stream()
-                .filter(f -> f.getAirportCode().equals(airportCode))
-                .filter(f -> f.getStatus().equals(FlightStatus.SCHEDULED))
-                .filter(f -> f.getMaxCategoryAvailable(ticket) != null)
-                .sorted((o1, o2) -> {
-                    if (o1.getMaxCategoryAvailable(ticket) != o2.getMaxCategoryAvailable(ticket)) {
-                        return o1.getMaxCategoryAvailable(ticket).ordinal() - o2.getMaxCategoryAvailable(ticket).ordinal(); //we want the highest category (BUSINESS = 0)
-                    }
-                    if (o1.getFreeSeats(ticket.getSeatCategory()) != o2.getFreeSeats(ticket.getSeatCategory())) {
-                        return o2.getFreeSeats(ticket.getSeatCategory()) - o1.getFreeSeats(ticket.getSeatCategory()); //reversed because we want the most free seats
-                    }
-                    return o1.getFlightCode().compareTo(o2.getFlightCode());
+        return AlternativeFlights.getAlternativeFlights(flights, ticket, airportCode);
 
-                })
-                .collect(Collectors.toList());
     }
 }
