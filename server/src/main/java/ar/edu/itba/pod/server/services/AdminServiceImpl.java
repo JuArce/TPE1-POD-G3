@@ -95,6 +95,11 @@ public class AdminServiceImpl implements AdminService {
                 flight.getTickets().add(ticket);
                 pair.getFirst().getTickets().remove(ticket);
                 successfulTickets.add(pair);
+                try {
+                    eventsManager.notifyFlightChange(pair.getFirst(), flight, ticket.getPassengerName());
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
 

@@ -53,10 +53,11 @@ public class EventsManagerImpl implements EventsManager {
     }
 
     @Override
-    public void notifyFlightChange(String passengerName, String oldFlightCode, String newFlightCode, String destination) throws RemoteException {
+    public void notifyFlightChange(Flight oldFlight, Flight newFlight, String passengerName) throws RemoteException {
         for (PassengerSubscriber p : this.passengerSubscribers) {
-            if (p.getPassengerName().equals(passengerName) && p.getFlightCode().equals(oldFlightCode)) {
-                p.getPassengerNotifier().notifyFlightChange(oldFlightCode, newFlightCode, destination);
+            if (p.getFlightCode().equals(oldFlight.getFlightCode()) && p.getPassengerName().equals(passengerName)) {
+                p.getPassengerNotifier().notifyFlightChange(oldFlight.getFlightCode(), newFlight.getFlightCode(), newFlight.getAirportCode());
+                //TODO change flight code in passenger subscriber ???
             }
         }
     }
