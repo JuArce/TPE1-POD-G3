@@ -79,7 +79,7 @@ public class AdminServiceImpl implements AdminService {
         List<Pair<Flight, Ticket>> successfulTickets = new ArrayList<>();
         List<Pair<Flight, Ticket>> failedTickets = new ArrayList<>();
         tickets.forEach(pair -> {
-            List<Flight> alternativeFlights = getAlternativeFlights(pair.getSecond(), pair.getFirst().getAirportCode());
+            List<Flight> alternativeFlights = getAlternativeFlights(pair.getSecond(), pair.getFirst());
             if (alternativeFlights.isEmpty()) {
                 failedTickets.add(pair);
             } else {
@@ -98,8 +98,8 @@ public class AdminServiceImpl implements AdminService {
                         .collect(Collectors.toList()));
     }
 
-    private List<Flight> getAlternativeFlights(Ticket ticket, String airportCode) {
-        return AlternativeFlights.getAlternativeFlights(flights, ticket, airportCode);
+    private List<Flight> getAlternativeFlights(Ticket ticket, Flight flight) {
+        return AlternativeFlights.getAlternativeFlights(flights, ticket, flight);
 
     }
 }

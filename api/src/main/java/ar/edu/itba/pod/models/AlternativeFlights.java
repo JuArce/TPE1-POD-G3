@@ -7,11 +7,12 @@ import java.util.stream.Collectors;
 public class AlternativeFlights implements Serializable {
 
 
-    public static List<Flight> getAlternativeFlights(List<Flight> flights,  Ticket ticket, String airportCode) {
+    public static List<Flight> getAlternativeFlights(List<Flight> flights,  Ticket ticket, Flight flight) {
         return flights.stream()
-                .filter(f -> f.getAirportCode().equals(airportCode))
+                .filter(f -> f.getAirportCode().equals(flight.getAirportCode()))
                 .filter(f -> f.getStatus().equals(FlightStatus.SCHEDULED))
                 .filter(f -> f.getMaxCategoryAvailable(ticket) != null)
+                .filter(f-> !f.equals(flight))
                 .sorted((o1, o2) -> {
                     if (o1.getMaxCategoryAvailable(ticket) != o2.getMaxCategoryAvailable(ticket)) {
                         return o1.getMaxCategoryAvailable(ticket).ordinal() - o2.getMaxCategoryAvailable(ticket).ordinal(); //we want the highest category (BUSINESS = 0)

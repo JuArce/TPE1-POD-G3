@@ -116,7 +116,7 @@ public class SeatAssignmentService implements ar.edu.itba.pod.services.SeatAssig
     public List<Flight> getAlternativeFlights(String flightCode, String passenger) throws Exception {
         Flight flight = validateFlight(flightCode);
         Ticket ticket = validatePassenger(passenger, flight);
-        return AlternativeFlights.getAlternativeFlights(flightList,ticket , passenger);
+        return AlternativeFlights.getAlternativeFlights(flightList, ticket , flight);
     }
 
     @Override
@@ -126,7 +126,7 @@ public class SeatAssignmentService implements ar.edu.itba.pod.services.SeatAssig
 //        nueva excepcion
         Flight newFlight = alternativeFlights.stream()
                 .findFirst()
-                .filter(f-> f.getFlightCode().equals(flightCode))
+                .filter(f-> f.getFlightCode().equals(newFlightCode))
                 .orElseThrow(FlightDoesNotExistException::new);
 
         validateFlight(newFlightCode);

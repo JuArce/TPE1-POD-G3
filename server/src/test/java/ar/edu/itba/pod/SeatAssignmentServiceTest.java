@@ -751,6 +751,8 @@ public class SeatAssignmentServiceTest {
         Flight flight = new Flight(FlightStatus.SCHEDULED, "AC1234", "FC1234", plane, tickets);
         Flight flight2 = new Flight(FlightStatus.SCHEDULED, "AC1234", "FC1235", plane2, tickets2);
         flights.add(flight);
+        flights.add(flight2);
+        
 
         seatAssignmentService = new SeatAssignmentService(flights);
 
@@ -761,7 +763,6 @@ public class SeatAssignmentServiceTest {
 
         }catch (Exception e) {
             fail();
-
         }
         assertEquals(flight.getTickets().size(), 0);
         assertEquals(flight2.getTickets().size(), 1);
