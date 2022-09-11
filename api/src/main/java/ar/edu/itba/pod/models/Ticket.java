@@ -1,14 +1,12 @@
 package ar.edu.itba.pod.models;
 
 import lombok.Getter;
-import lombok.Setter;
 
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.Optional;
 
 public class Ticket implements Serializable {
-    @Setter
     private SeatLocation seatLocation;
     @Getter
     private final String passengerName;
@@ -20,11 +18,34 @@ public class Ticket implements Serializable {
         this.seatCategory = seatCategory;
     }
 
-    public Optional<SeatLocation> getSeatLocation() {
+    public Ticket(String passengerName, SeatCategory seatCategory,int i, char a) {
+        this.passengerName = passengerName;
+        this.seatCategory = seatCategory;
+        this.seatLocation = new SeatLocation(i,a);
+    }
+
+    public synchronized Optional<SeatLocation> getSeatLocation() {
         return Optional.ofNullable(seatLocation);
     }
 
-    public static class SeatLocation {
+    public synchronized void setSeatLocation(SeatLocation seatLocation) {
+        this.seatLocation = seatLocation;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Ticket ticket = (Ticket) o;
+        return Objects.equals(seatLocation, ticket.seatLocation) && passengerName.equals(ticket.passengerName) && seatCategory == ticket.seatCategory;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(seatLocation, passengerName, seatCategory);
+    }
+
+    public static class SeatLocation implements Serializable {
         @Getter
         private final int row;
         @Getter
@@ -33,6 +54,11 @@ public class Ticket implements Serializable {
         public SeatLocation(int row, char column) {
             this.row = row;
             this.column = column;
+        }
+
+        public SeatLocation(Ticket.SeatLocation o) {
+            this.row = o.row;
+            this.column = o.column;
         }
 
         @Override
