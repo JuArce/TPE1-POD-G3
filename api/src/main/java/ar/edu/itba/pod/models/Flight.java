@@ -1,15 +1,15 @@
 package ar.edu.itba.pod.models;
 
 import lombok.Getter;
-import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
 public class Flight implements Serializable {
-    @Getter @Setter
+    @Getter
     private FlightStatus status;
     @Getter
     private final String airportCode;
@@ -25,7 +25,7 @@ public class Flight implements Serializable {
         this.airportCode = airportCode;
         this.flightCode = flightCode;
         this.plane = plane;
-        this.tickets = tickets;
+        this.tickets = Collections.synchronizedList(tickets);
     }
 
     public SeatCategory getMaxCategoryAvailable(Ticket ticket) {
@@ -38,9 +38,11 @@ public class Flight implements Serializable {
             }
         }
 
-        this.tickets.stream()
-                .filter(t -> t.getSeatLocation().isPresent())
-                .forEach(t -> seats.put(t.getSeatCategory(), seats.get(t.getSeatCategory()) - 1));
+        synchronized (tickets) {
+            this.tickets.stream()
+                    .filter(t -> t.getSeatLocation().isPresent())
+                    .forEach(t -> seats.put(t.getSeatCategory(), seats.get(t.getSeatCategory()) - 1));
+        }
 
         for (SeatCategory category : SeatCategory.values()) {
             if (seats.getOrDefault(category, 0) > 0) {
@@ -58,11 +60,17 @@ public class Flight implements Serializable {
             }
         }
 
-        freeSeats -= tickets.stream()
-                .filter(t -> t.getSeatLocation().isPresent())
-                .filter(t -> t.getSeatCategory().compareTo(maxCategory) >= 0)
-                .count();
+        synchronized (tickets) {
+            freeSeats -= tickets.stream()
+                    .filter(t -> t.getSeatLocation().isPresent())
+                    .filter(t -> t.getSeatCategory().compareTo(maxCategory) >= 0)
+                    .count();
+        }
 
         return freeSeats;
+    }
+
+    public synchronized void setStatus(FlightStatus status) {
+        this.status = status;
     }
 }

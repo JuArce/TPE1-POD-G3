@@ -60,7 +60,7 @@ public class AdminServiceImpl implements AdminService {
         this.eventsManager.notifyFlightCancellation(flight);
     }
 
-    private Flight setFlightStatus(String flightCode, FlightStatus status) {
+    private synchronized Flight setFlightStatus(String flightCode, FlightStatus status) {
         Flight flight = Optional.ofNullable(flights.get(flightCode)).orElseThrow(FlightCodeNotExistException::new);
         if (!flight.getStatus().equals(FlightStatus.SCHEDULED)) {
             throw new FlightStatusNotPendingException();
@@ -71,17 +71,20 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public ReticketingReport rescheduleTickets() throws RemoteException {
-        final List<Pair<Flight, Ticket>> tickets = this.flights.values().stream()
-                .filter(f -> f.getStatus().equals(FlightStatus.CANCELLED))
-                .sorted(Comparator.comparing(Flight::getFlightCode))
-                .flatMap(f -> f.getTickets().stream()
-                        .sorted(Comparator.comparing(Ticket::getPassengerName))
-                        .map(t -> new Pair<>(f, t)))
-                .toList();
+        List<Pair<Flight, Ticket>> ticketsToReschedule;
+         synchronized (flights) {
+            ticketsToReschedule = this.flights.values().stream()
+                    .filter(f -> f.getStatus().equals(FlightStatus.CANCELLED))
+                    .sorted(Comparator.comparing(Flight::getFlightCode))
+                    .flatMap(f -> f.getTickets().stream()
+                            .sorted(Comparator.comparing(Ticket::getPassengerName))
+                            .map(t -> new Pair<>(f, t)))
+                    .toList();
+        }
 
         List<Pair<Flight, Ticket>> successfulTickets = new ArrayList<>();
         List<Pair<Flight, Ticket>> failedTickets = new ArrayList<>();
-        tickets.forEach(pair -> {
+        ticketsToReschedule.forEach(pair -> {
             List<Flight> alternativeFlights = getAlternativeFlights(pair.getSecond(), pair.getFirst());
             if (alternativeFlights.isEmpty()) {
                 failedTickets.add(pair);
@@ -107,7 +110,8 @@ public class AdminServiceImpl implements AdminService {
     }
 
     private List<Flight> getAlternativeFlights(Ticket ticket, Flight flight) {
-        return AlternativeFlights.getAlternativeFlights(flights.values().stream().toList(), ticket, flight);
-
+        synchronized (flights) {
+            return AlternativeFlights.getAlternativeFlights(flights.values().stream().toList(), ticket, flight);
+        }
     }
 }
