@@ -1,12 +1,28 @@
 package ar.edu.itba.pod.models;
 
+import ar.edu.itba.pod.utils.Pair;
+import lombok.Getter;
+
+import javax.swing.*;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class AlternativeFlights implements Serializable {
+public class AlternativeFlight implements Serializable {
 
+    @Getter
+    String flightCode;
+    @Getter
+    String airportCode;
+    @Getter
+    List<Pair<SeatCategory, Integer>> freeSeats;
+
+    public AlternativeFlight(String flightCode, String airportCode, List<Pair<SeatCategory, Integer>> freeSeats) {
+        this.flightCode = flightCode;
+        this.airportCode = airportCode;
+        this.freeSeats = freeSeats;
+    }
 
     public static List<Flight> getAlternativeFlights(Collection<Flight> flights, Ticket ticket, Flight flight) {
             return flights.stream()

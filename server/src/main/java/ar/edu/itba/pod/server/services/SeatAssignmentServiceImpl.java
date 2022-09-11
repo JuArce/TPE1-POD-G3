@@ -136,7 +136,7 @@ public class SeatAssignmentServiceImpl implements ar.edu.itba.pod.services.SeatA
         Ticket ticket = validatePassenger(passenger, flight);
 
         synchronized (flights.values()) {
-            return AlternativeFlights.getAlternativeFlights(flights.values(), ticket, flight);
+            return AlternativeFlight.getAlternativeFlights(flights.values(), ticket, flight);
         }
     }
 
