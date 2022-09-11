@@ -3,10 +3,7 @@ package ar.edu.itba.pod.models;
 import lombok.Getter;
 
 import java.io.Serializable;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 public class Flight implements Serializable {
     private FlightStatus status;
@@ -75,5 +72,24 @@ public class Flight implements Serializable {
 
     public synchronized void setStatus(FlightStatus status) {
         this.status = status;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        Flight flight = (Flight) o;
+        return flightCode.equals(flight.flightCode);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(flightCode);
+    }
+
+    public synchronized boolean isStatus(FlightStatus confirmed) {
+        return this.status == confirmed;
     }
 }

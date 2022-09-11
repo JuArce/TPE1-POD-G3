@@ -7,6 +7,7 @@ import ar.edu.itba.pod.models.SeatCategory;
 import ar.edu.itba.pod.models.Ticket;
 
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -29,8 +30,13 @@ public class EventsManagerImpl implements EventsManager {
     public void notifySeatAssignment(Flight flight, Ticket ticket) throws RemoteException {
         synchronized (passengerSubscribers) {
             for (PassengerSubscriber passengerSubscriber : passengerSubscribers) {
-                if (passengerSubscriber.getFlightCode().equals(flight.getFlightCode()) && passengerSubscriber.getPassengerName().equals(ticket.getPassengerName())) {
-                    passengerSubscriber.getPassengerNotifier().notifySeatAssignment(flight.getFlightCode(), flight.getAirportCode(), ticket.getSeatLocation().orElse(null), ticket.getSeatCategory());
+                if (passengerSubscriber.getFlightCode().equals(flight.getFlightCode()) &&
+                        passengerSubscriber.getPassengerName().equals(ticket.getPassengerName()))
+                {
+                    passengerSubscriber
+                            .getPassengerNotifier()
+                            .notifySeatAssignment(flight.getFlightCode(), flight.getAirportCode(), ticket.getSeatLocation()
+                                    .orElse(null), ticket.getSeatCategory());
                 }
             }
         }
@@ -41,7 +47,8 @@ public class EventsManagerImpl implements EventsManager {
         synchronized (passengerSubscribers) {
             for (PassengerSubscriber passengerSubscriber : passengerSubscribers) {
                 if (passengerSubscriber.getFlightCode().equals(flight.getFlightCode()) && passengerSubscriber.getPassengerName().equals(ticket.getPassengerName())) {
-                    passengerSubscriber.getPassengerNotifier().notifySeatChange(flight.getFlightCode(), flight.getAirportCode(), oldSeat, oldCategory, ticket.getSeatLocation().orElse(null), ticket.getSeatCategory());
+                    passengerSubscriber.getPassengerNotifier()
+                            .notifySeatChange(flight.getFlightCode(), flight.getAirportCode(), oldSeat, oldCategory, ticket.getSeatLocation().orElse(null), ticket.getSeatCategory());
                 }
             }
         }
@@ -52,8 +59,12 @@ public class EventsManagerImpl implements EventsManager {
         synchronized (passengerSubscribers) {
             for (PassengerSubscriber p : this.passengerSubscribers) {
                 if (p.getFlightCode().equals(flight.getFlightCode())) {
-                    Ticket ticket = flight.getTickets().stream().filter(t -> t.getPassengerName().equals(p.getPassengerName())).findFirst().orElseThrow(PassengerNotExistException::new);
-                    p.getPassengerNotifier().notifyFlightCancellation(flight.getFlightCode(), flight.getAirportCode(), ticket.getSeatLocation().orElse(null), ticket.getSeatCategory());
+                    Ticket ticket = flight.getTickets().stream()
+                            .filter(t -> t.getPassengerName().equals(p.getPassengerName()))
+                            .findFirst().orElseThrow(PassengerNotExistException::new);
+                    p.getPassengerNotifier()
+                            .notifyFlightCancellation(flight.getFlightCode(), flight.getAirportCode(), ticket.getSeatLocation()
+                                    .orElse(null), ticket.getSeatCategory());
                 }
             }
         }
@@ -74,12 +85,20 @@ public class EventsManagerImpl implements EventsManager {
     @Override
     public void notifyFlightConfirmation(Flight flight) throws RemoteException {
         synchronized (passengerSubscribers) {
+            var toRemove = new ArrayList<PassengerSubscriber>();
+
             for (PassengerSubscriber p : this.passengerSubscribers) {
                 if (p.getFlightCode().equals(flight.getFlightCode())) {
-                    Ticket ticket = flight.getTickets().stream().filter(t -> t.getPassengerName().equals(p.getPassengerName())).findFirst().orElseThrow(PassengerNotExistException::new);
-                    p.getPassengerNotifier().notifyFlightConfirmation(flight.getFlightCode(), flight.getAirportCode(), ticket.getSeatLocation().orElse(null), ticket.getSeatCategory());
+                    Ticket ticket = flight.getTickets().stream()
+                            .filter(t -> t.getPassengerName().equals(p.getPassengerName()))
+                            .findFirst().orElseThrow(PassengerNotExistException::new);
+
+                    var notifier = p.getPassengerNotifier();
+                    notifier.notifyFlightConfirmation(flight.getFlightCode(), flight.getAirportCode(), ticket.getSeatLocation().orElse(null), ticket.getSeatCategory());
+                    toRemove.add(p);
                 }
             }
+            this.passengerSubscribers.removeAll(toRemove);
         }
     }
 }

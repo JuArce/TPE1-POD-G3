@@ -56,6 +56,11 @@ public class Ticket implements Serializable {
             this.column = column;
         }
 
+        public SeatLocation(Ticket.SeatLocation o) {
+            this.row = o.row;
+            this.column = o.column;
+        }
+
         @Override
         public boolean equals(Object o) {
             if (this == o) return true;

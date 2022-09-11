@@ -21,6 +21,7 @@ public class SeatAssignmentServiceImpl implements ar.edu.itba.pod.services.SeatA
     private Ticket validatePassenger(String passenger, Flight flight) {
         if (passenger.isEmpty())
             throw new InvalidPassengerException();
+
         synchronized (flight.getTickets()) {
             return flight.getTickets().stream()
                     .filter(t -> t.getPassengerName().equals(passenger))
@@ -44,10 +45,9 @@ public class SeatAssignmentServiceImpl implements ar.edu.itba.pod.services.SeatA
 
         Flight flight = Optional.ofNullable(flights.get(flightCode)).orElseThrow(FlightDoesNotExistException::new);
 
-        synchronized (flights.get(flightCode)) {
-            if (flight.getStatus() == FlightStatus.CONFIRMED)
-                throw new FlightIsConfirmedException();
-        }
+        if (flight.isStatus(FlightStatus.CONFIRMED))
+            throw new FlightIsConfirmedException();
+
         return flight;
     }
 
@@ -64,13 +64,10 @@ public class SeatAssignmentServiceImpl implements ar.edu.itba.pod.services.SeatA
     public Boolean isSeatTaken(String flightCode, int row, char column) {
         Flight flight = validateFlight(flightCode);
 
-        synchronized (flights.get(flightCode)) {
-            if (flight.getStatus() == FlightStatus.CANCELLED)
-                throw new FlightIsCancelledException();
-        }
+        if (flight.isStatus(FlightStatus.CANCELLED))
+            throw new FlightIsCancelledException();
 
         validateSeatLocation(row, column, flight);
-
         Optional<Ticket> ticketOnLocation = ticketOnSeatLocation(flight, row, column);
 
         return ticketOnLocation.isPresent();
@@ -80,10 +77,8 @@ public class SeatAssignmentServiceImpl implements ar.edu.itba.pod.services.SeatA
     public void assignSeat(String flightCode, String passenger, int row, char column) throws Exception {
         Flight flight = validateFlight(flightCode);
 
-        synchronized (flights.get(flightCode)) {
-            if (flight.getStatus() == FlightStatus.CANCELLED)
-                throw new FlightIsCancelledException();
-        }
+        if (flight.isStatus(FlightStatus.CANCELLED))
+            throw new FlightIsCancelledException();
 
         Plane plane = validateSeatLocation(row, column, flight);
 
@@ -101,54 +96,47 @@ public class SeatAssignmentServiceImpl implements ar.edu.itba.pod.services.SeatA
                 throw new SeatCategoryIsToHighException();
 
             ticket.setSeatLocation(new Ticket.SeatLocation(row, column));
+            eventsManager.notifySeatAssignment(flight, ticket);
         }
-        eventsManager.notifySeatAssignment(flight, ticket);
     }
 
     @Override
     public void changeSeat(String flightCode, String passenger, int row, char column) throws Exception {
         Flight flight = validateFlight(flightCode);
 
-        synchronized (flights.get(flightCode)) {
-            if (flight.getStatus() == FlightStatus.CANCELLED)
-                throw new FlightIsCancelledException();
-        }
+        if (flight.isStatus(FlightStatus.CANCELLED))
+            throw new FlightIsCancelledException();
 
         validateSeatLocation(row, column, flight);
 
         Ticket ticket = validatePassenger(passenger, flight);
-        Ticket.SeatLocation oldSeatLocation;
-        SeatCategory oldSeatCategory;
 
         synchronized (flights.get(flightCode)) {
-            if (ticket.getSeatLocation().isEmpty())
-                throw new PassengerNotAssignedException();
-
+            Ticket.SeatLocation oldSeatLocation =  new Ticket.SeatLocation(ticket.getSeatLocation()
+                    .orElseThrow(PassengerNotAssignedException::new)
+            );
+            SeatCategory oldSeatCategory = flight.getPlane().getRows().get(oldSeatLocation.getRow() - 1).getCategory();;
             Optional<Ticket> ticketOnLocation = ticketOnSeatLocation(flight, row, column);
-            if (ticketOnLocation.isPresent())
+
+            if (ticketOnLocation.isPresent() && !oldSeatLocation.equals(new Ticket.SeatLocation(row, column)))
                 throw new SeatAlreadyAssignedException();
 
-            oldSeatLocation = new Ticket.SeatLocation(ticket.getSeatLocation().get().getRow(), ticket.getSeatLocation().get().getColumn());
-            oldSeatCategory = flight.getPlane().getRows().get(oldSeatLocation.getRow() - 1).getCategory();
-
             ticket.setSeatLocation(new Ticket.SeatLocation(row, column));
+            eventsManager.notifySeatChange(flight, oldSeatLocation, oldSeatCategory, ticket);
         }
-        eventsManager.notifySeatChange(flight, oldSeatLocation, oldSeatCategory, ticket);
     }
 
     @Override
     public List<Flight> getAlternativeFlights(String flightCode, String passenger) {
         Flight flight = validateFlight(flightCode);
 
-        synchronized (flights.get(flightCode)) {
-            if (flight.getStatus() == FlightStatus.CONFIRMED)
-                throw new FlightIsCancelledException();
-        }
+        if (flight.isStatus(FlightStatus.CONFIRMED))
+            throw new FlightIsConfirmedException();
 
         Ticket ticket = validatePassenger(passenger, flight);
 
         synchronized (flights.values()) {
-            return AlternativeFlights.getAlternativeFlights(flights.values().stream().toList(), ticket, flight);
+            return AlternativeFlights.getAlternativeFlights(flights.values(), ticket, flight);
         }
     }
 
@@ -156,24 +144,18 @@ public class SeatAssignmentServiceImpl implements ar.edu.itba.pod.services.SeatA
     public void changeTicket(String passenger, String flightCode, String newFlightCode) {
         Flight oldFlight = validateFlight(flightCode);
         List<Flight> alternativeFlights = getAlternativeFlights(flightCode, passenger);
+
         // nueva excepcion
         Flight newFlight = alternativeFlights.stream()
-                .findFirst()
                 .filter(f -> f.getFlightCode().equals(newFlightCode))
+                .findFirst()
                 .orElseThrow(FlightDoesNotExistException::new);
 
         validateFlight(newFlightCode);
         Ticket ticket = validatePassenger(passenger, oldFlight);
 
-        synchronized (flights.get(flightCode)) {
-            ticket.setSeatLocation(null);
-        }
-
-        synchronized (oldFlight.getTickets()) {
-            oldFlight.getTickets().remove(ticket);
-        }
-        synchronized (newFlight.getTickets()) {
-            newFlight.getTickets().add(ticket);
-        }
+        ticket.setSeatLocation(null);
+        oldFlight.getTickets().remove(ticket);
+        newFlight.getTickets().add(ticket);
     }
 }

@@ -12,12 +12,11 @@ public class SeatMapServiceImpl implements SeatMapService {
 
     private final Map<String, Flight> flights;
 
-
     public SeatMapServiceImpl(Map<String, Flight> flights) {
         this.flights = flights;
     }
 
-    private Seat[] createNewSeats(int columns) {
+    private static Seat[] createNewSeats(int columns) {
         Seat[] toReturn = new Seat[columns + 1];
         for (int i = 0; i < columns; i++) {
             toReturn[i] = new Seat((char) ('A' + i));
