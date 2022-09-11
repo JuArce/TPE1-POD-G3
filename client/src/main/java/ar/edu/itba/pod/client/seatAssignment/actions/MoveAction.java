@@ -16,14 +16,22 @@ public class MoveAction implements Runnable {
         this.logger = LoggerFactory.getLogger(MoveAction.class);
     }
 
+    public MoveAction(SeatAssignmentService service, CliParser.Arguments arguments, Logger logger) {
+        this.service = service;
+        this.arguments = arguments;
+        this.logger = logger;
+    }
+
     @Override
     public void run() {
         var flightCode = arguments.getFlightCode();
+        var row = arguments.getRow();
+        var col = arguments.getCol().charAt(0);
         try {
-            service.changeSeat(flightCode, arguments.getPassengerName(), arguments.getRow(), arguments.getCol().charAt(0));
-            logger.info("Seat changed successfully.");
+            service.changeSeat(flightCode, arguments.getPassengerName(), row, col);
+            logger.info("Seat changed successfully to {}{}.", row, col);
         } catch (Exception e) {
-            logger.error("Cannot move passenger from flight {}", flightCode);
+            logger.error("Cannot change seat to {}{} in flight {}.", row, col, flightCode);
         }
     }
 }
