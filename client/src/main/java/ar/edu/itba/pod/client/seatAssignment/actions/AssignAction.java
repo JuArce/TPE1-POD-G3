@@ -16,6 +16,12 @@ public class AssignAction implements Runnable {
         this.logger = LoggerFactory.getLogger(AssignAction.class);
     }
 
+    public AssignAction(SeatAssignmentService service, CliParser.Arguments arguments, Logger logger) {
+        this.service = service;
+        this.arguments = arguments;
+        this.logger = logger;
+    }
+
     @Override
     public void run() {
         var flightCode = arguments.getFlightCode();
@@ -24,9 +30,9 @@ public class AssignAction implements Runnable {
         var col = arguments.getCol().charAt(0);
         try {
             service.assignSeat(flightCode, passengerName, row, col);
-            logger.info("Seat {}{} successfully assigned to passenger {} in flight {}", row, col, passengerName, flightCode);
+            logger.info("Seat {}{} successfully assigned to passenger {} in flight {}.", row, col, passengerName, flightCode);
         } catch (Exception e) {
-            logger.error("Cannot assign seat {}{} for flight {} and passenger {}", row, col, flightCode, passengerName);
+            logger.error("Cannot assign seat {}{} for flight {} and passenger {}.", row, col, flightCode, passengerName);
         }
     }
 }
