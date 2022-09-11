@@ -839,48 +839,4 @@ public class SeatAssignmentServiceTest {
             assertEquals("FlightDoesNotExistException", e.getMessage());
         }
     }
-
-    @Test
-    public void flight_ShouldSucceed() {
-
-//        Arrange
-        List<Ticket> tickets = new ArrayList<>();
-        List<Ticket> tickets2 = new ArrayList<>();
-        Ticket ticket = new Ticket("test-name", SeatCategory.BUSINESS);
-        Ticket ticket2 = new Ticket("test-name2", SeatCategory.ECONOMY);
-        ticket.setSeatLocation(new Ticket.SeatLocation(4, 'b'));
-        ticket2.setSeatLocation(new Ticket.SeatLocation(4, 'b'));
-        tickets.add(ticket);
-        tickets2.add(ticket2);
-
-        TreeMap<SeatCategory, Pair<Integer, Integer>> seatsPerCategory = new TreeMap<>();
-        seatsPerCategory.put(SeatCategory.ECONOMY, new Pair<>(4, 2));
-        seatsPerCategory.put(SeatCategory.BUSINESS, new Pair<>(4, 2));
-        seatsPerCategory.put(SeatCategory.PREMIUM_ECONOMY, new Pair<>(4, 2));
-
-        Plane plane1 = new Plane("test-model", seatsPerCategory);
-        Plane plane2 = new Plane("test-model", seatsPerCategory);
-
-        Map<String, Flight> flights = new HashMap<>();
-        String flightCode1 = "FC1234";
-        String flightCode2 = "FC1235";
-        Flight flight1 = new Flight(FlightStatus.SCHEDULED, "AC1234", flightCode1, plane1, tickets);
-        Flight flight2 = new Flight(FlightStatus.SCHEDULED, "AC1234", flightCode2, plane2, tickets2);
-        flights.put(flightCode1, flight1);
-        flights.put(flightCode2, flight2);
-
-        seatAssignmentService = new SeatAssignmentServiceImpl(flights, new EventsManagerImpl());
-
-//        Act
-        List<AlternativeFlight> af =   flight1.getAlternativeFlights(flights.values(), "test-name");
-
-//            Assert
-        assertEquals(af.get(0).getFlightCode(), "FC1235");
-        assertEquals(af.get(0).getFreeSeats().get(0).getSecond(),8);
-        assertEquals(af.get(0).getFreeSeats().get(0).getFirst(),SeatCategory.BUSINESS);
-        assertEquals(af.get(0).getFreeSeats().get(1).getSecond(),8);
-        assertEquals(af.get(0).getFreeSeats().get(1).getFirst(),SeatCategory.PREMIUM_ECONOMY);
-        assertEquals(af.get(0).getFreeSeats().get(2).getSecond(),7);
-        assertEquals(af.get(0).getFreeSeats().get(2).getFirst(),SeatCategory.ECONOMY);
-    }
 }
