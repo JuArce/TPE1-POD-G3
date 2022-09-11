@@ -16,14 +16,21 @@ public class ChangeTicketAction implements Runnable {
         this.logger = LoggerFactory.getLogger(ChangeTicketAction.class);
     }
 
+    public ChangeTicketAction(SeatAssignmentService service, CliParser.Arguments arguments, Logger logger) {
+        this.service = service;
+        this.arguments = arguments;
+        this.logger = logger;
+    }
+
     @Override
     public void run() {
         var flightCode = arguments.getFlightCode();
+        var originalFlightCode = arguments.getOriginalFlightCode();
         try {
-            service.changeTicket(arguments.getPassengerName(), arguments.getOriginalFlightCode(), arguments.getFlightCode());
-            logger.info("Ticket for flight {} changed successfully.", flightCode);
+            service.changeTicket(arguments.getPassengerName(), originalFlightCode, arguments.getFlightCode());
+            logger.info("Ticket for new flight {} from {} changed successfully.", flightCode, originalFlightCode);
         } catch (Exception e) {
-            logger.error("Error while changing ticket in flight {}", flightCode);
+            logger.error("Error while changing ticket from flight {} to {}.", originalFlightCode, flightCode);
         }
     }
 }
