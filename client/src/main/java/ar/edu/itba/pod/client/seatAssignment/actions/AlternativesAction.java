@@ -16,16 +16,26 @@ public class AlternativesAction implements Runnable {
         this.logger = LoggerFactory.getLogger(AlternativesAction.class);
     }
 
+    public AlternativesAction(SeatAssignmentService service, CliParser.Arguments arguments, Logger logger) {
+        this.service = service;
+        this.arguments = arguments;
+        this.logger = logger;
+    }
+
     @Override
     public void run() {
         var flightCode = arguments.getFlightCode();
         try {
             var alternativeFlights = service.getAlternativeFlights(flightCode, arguments.getPassengerName());
-            alternativeFlights.forEach(flight -> {
-                logger.info("{} | {} | {} {}", flight.getFlight().getAirportCode(), flight.getFlight().getFlightCode(), flight.getFreeSeats(), flight.getCategory());
-            });
+            if (alternativeFlights.isEmpty()) {
+                logger.info("No alternatives found for flight {}.", flightCode);
+            } else {
+                alternativeFlights.forEach(flight -> {
+                    logger.info("{} | {} | {} {}", flight.getFlight().getAirportCode(), flight.getFlight().getFlightCode(), flight.getFreeSeats(), flight.getCategory());
+                });
+            }
         } catch (Exception e) {
-            logger.error("Cannot get alternatives for flight {}", flightCode);
+            logger.error("Cannot get alternatives for flight {}.", flightCode);
         }
     }
 }

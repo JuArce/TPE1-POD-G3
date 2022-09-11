@@ -22,7 +22,7 @@ public class StatusActionTest {
         arguments.setRow(row);
         arguments.setCol(col);
 
-        when(seatAssignmentService.isSeatTaken(flightCode, row, col.charAt(0))).thenReturn(true);
+        when(seatAssignmentService.isSeatTaken(eq(flightCode), eq(row), eq(col.charAt(0)))).thenReturn(true);
 
         // Act
         new StatusAction(seatAssignmentService, arguments, logger).run();
