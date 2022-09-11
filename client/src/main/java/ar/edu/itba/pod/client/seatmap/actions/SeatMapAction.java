@@ -39,6 +39,7 @@ public class SeatMapAction implements Runnable{
             var printWriter = new PrintWriter(outputFile);
             seatRows.forEach( s -> printWriter.println(s.toString()));
             printWriter.close();
+            logger.info("Seat map exported...");
         }
         catch (RemoteException e) {
             logger.error("Cannot request seat map for flight {}", flightCode);

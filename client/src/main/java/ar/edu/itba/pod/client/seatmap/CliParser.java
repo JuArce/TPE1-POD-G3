@@ -45,17 +45,14 @@ public class CliParser {
 
         var category = cmd.getOptionValue("Dcategory");
         var row = cmd.getOptionValue("Drow");
-        args.setCategory(SeatCategory.valueOf(category));
-        args.setRow(Integer.getInteger(row));
-
-        if(category == null){
-            if(row !=null){
-                args.setAction(ActionType.ROW);
-            }else{
-                args.setAction(ActionType.IDENTITY);
-            }
-        }else{
+        if(category != null) {
+            args.setCategory(SeatCategory.valueOf(category));
             args.setAction(ActionType.CATEGORY);
+        }else if(row != null) {
+            args.setRow(Integer.valueOf(row));
+            args.setAction(ActionType.ROW);
+        }else{
+            args.setAction(ActionType.IDENTITY);
         }
 
 
@@ -88,7 +85,7 @@ public class CliParser {
 
             var outputPath = getOutputPath();
             if (outputPath.isPresent()){
-                if(outputPath.get().endsWith(".csv")){
+                if(!outputPath.get().endsWith(".csv")){
                     logger.error("The file is not a csv file!");
                     return false;
                 }
