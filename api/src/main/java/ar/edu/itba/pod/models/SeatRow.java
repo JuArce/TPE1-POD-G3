@@ -3,6 +3,8 @@ package ar.edu.itba.pod.models;
 import lombok.Getter;
 
 import java.io.Serializable;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 public class SeatRow implements Serializable {
     @Getter
@@ -16,5 +18,11 @@ public class SeatRow implements Serializable {
         this.row = row;
         this.seats = seats;
         this.category = category;
+    }
+
+    @Override
+    public String toString() {
+        var seatsStrings = Arrays.stream(seats).map(Seat::toString).collect(Collectors.toList());
+        return seatsStrings.stream().collect(Collectors.joining("|", "| ", " | " + category.toString())) ;
     }
 }
