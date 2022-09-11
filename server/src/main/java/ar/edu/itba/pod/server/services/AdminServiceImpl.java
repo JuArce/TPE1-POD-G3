@@ -60,12 +60,14 @@ public class AdminServiceImpl implements AdminService {
         this.eventsManager.notifyFlightCancellation(flight);
     }
 
-    private synchronized Flight setFlightStatus(String flightCode, FlightStatus status) {
+    private Flight setFlightStatus(String flightCode, FlightStatus status) {
         Flight flight = Optional.ofNullable(flights.get(flightCode)).orElseThrow(FlightCodeNotExistException::new);
-        if (!flight.getStatus().equals(FlightStatus.SCHEDULED)) {
-            throw new FlightStatusNotPendingException();
+        synchronized (flights.get(flightCode)) {
+            if (!flight.getStatus().equals(FlightStatus.SCHEDULED)) {
+                throw new FlightStatusNotPendingException();
+            }
+            flight.setStatus(status);
         }
-        flight.setStatus(status);
         return flight;
     }
 

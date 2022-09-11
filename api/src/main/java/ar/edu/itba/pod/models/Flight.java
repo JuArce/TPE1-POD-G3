@@ -9,7 +9,6 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public class Flight implements Serializable {
-    @Getter
     private FlightStatus status;
     @Getter
     private final String airportCode;
@@ -68,6 +67,10 @@ public class Flight implements Serializable {
         }
 
         return freeSeats;
+    }
+
+    public synchronized FlightStatus getStatus() {
+        return status;
     }
 
     public synchronized void setStatus(FlightStatus status) {

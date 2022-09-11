@@ -1,7 +1,6 @@
 package ar.edu.itba.pod.models;
 
 import lombok.Getter;
-import lombok.Setter;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -25,7 +24,7 @@ public class Ticket implements Serializable {
         this.seatLocation = new SeatLocation(i,a);
     }
 
-    public Optional<SeatLocation> getSeatLocation() {
+    public synchronized Optional<SeatLocation> getSeatLocation() {
         return Optional.ofNullable(seatLocation);
     }
 
