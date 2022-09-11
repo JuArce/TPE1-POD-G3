@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 
 public class PassengerNotifierImpl implements PassengerNotifier {
 
@@ -40,7 +41,8 @@ public class PassengerNotifierImpl implements PassengerNotifier {
 
     @Override
     public void notifyFlightCancellation(String flightCode, String destination, Ticket.SeatLocation seat, SeatCategory category) throws RemoteException {
-        logger.info("Your Flight {} with destination {} was cancelled and your seat is {} {}.", flightCode, destination, category, seat);
+        String seatString = seat == null ? "" : String.format(" and your seat %s %s", category, seat);
+        logger.info("Your Flight {} with destination {} was cancelled{}.", flightCode, destination, seatString);
     }
 
     @Override
@@ -50,6 +52,8 @@ public class PassengerNotifierImpl implements PassengerNotifier {
 
     @Override
     public void notifyFlightConfirmation(String flightCode, String destination, Ticket.SeatLocation seat, SeatCategory category) throws RemoteException {
-        logger.info("Your Flight {} with destination {} was confirmed and your seat is {} {}.", flightCode, destination, category, seat);
+        String seatString = seat == null ? "" : String.format(" and your seat %s %s", category, seat);
+        logger.info("Your Flight {} with destination {} was confirmed{}.", flightCode, destination, seatString);
+        UnicastRemoteObject.unexportObject(this,true);
     }
 }
