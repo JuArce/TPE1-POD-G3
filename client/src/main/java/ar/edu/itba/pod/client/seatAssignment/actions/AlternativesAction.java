@@ -18,6 +18,14 @@ public class AlternativesAction implements Runnable {
 
     @Override
     public void run() {
-        // TODO: Implementar
+        var flightCode = arguments.getFlightCode();
+        try {
+            var alternativeFlights = service.getAlternativeFlights(flightCode, arguments.getPassengerName());
+            alternativeFlights.forEach(flight -> {
+                logger.info("{} | {} | {} {}", flight.getFlight().getAirportCode(), flight.getFlight().getFlightCode(), flight.getFreeSeats(), flight.getCategory());
+            });
+        } catch (Exception e) {
+            logger.error("Cannot get alternatives for flight {}", flightCode);
+        }
     }
 }
