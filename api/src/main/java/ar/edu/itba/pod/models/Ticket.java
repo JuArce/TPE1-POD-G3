@@ -8,7 +8,6 @@ import java.util.Objects;
 import java.util.Optional;
 
 public class Ticket implements Serializable {
-    @Setter
     private SeatLocation seatLocation;
     @Getter
     private final String passengerName;
@@ -28,6 +27,10 @@ public class Ticket implements Serializable {
 
     public Optional<SeatLocation> getSeatLocation() {
         return Optional.ofNullable(seatLocation);
+    }
+
+    public synchronized void setSeatLocation(SeatLocation seatLocation) {
+        this.seatLocation = seatLocation;
     }
 
     @Override
