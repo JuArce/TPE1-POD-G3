@@ -5,6 +5,8 @@ import ar.edu.itba.pod.services.SeatAssignmentService;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 
+import java.rmi.RemoteException;
+
 import static org.mockito.Mockito.*;
 
 public class StatusActionTest {
@@ -42,7 +44,7 @@ public class StatusActionTest {
         arguments.setRow(row);
         arguments.setCol(col);
 
-        when(seatAssignmentService.isSeatTaken(flightCode, row, col.charAt(0))).thenThrow(Exception.class);
+        when(seatAssignmentService.isSeatTaken(flightCode, row, col.charAt(0))).thenThrow(RemoteException.class);
 
         // Act
         new StatusAction(seatAssignmentService, arguments, logger).run();
