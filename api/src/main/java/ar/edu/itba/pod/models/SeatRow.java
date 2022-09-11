@@ -4,6 +4,7 @@ import lombok.Getter;
 
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class SeatRow implements Serializable {
@@ -22,7 +23,7 @@ public class SeatRow implements Serializable {
 
     @Override
     public String toString() {
-        var seatsStrings = Arrays.stream(seats).map(Seat::toString).collect(Collectors.toList());
+        var seatsStrings = Arrays.stream(seats).filter(Objects::nonNull).map(Seat::toString).collect(Collectors.toList());
         return seatsStrings.stream().collect(Collectors.joining("|", "| ", " | " + category.toString())) ;
     }
 }
