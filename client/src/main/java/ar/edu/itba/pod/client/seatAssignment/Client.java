@@ -30,7 +30,7 @@ public class Client {
                 case ASSIGN -> new AssignAction(service, arguments).run();
                 case MOVE -> new MoveAction(service, arguments).run();
                 case ALTERNATIVES -> new AlternativesAction(service, arguments).run();
-                case CHANGE_TICKET -> new ChangeTicketAction(service, arguments).run();
+                case CHANGETICKET -> new ChangeTicketAction(service, arguments).run();
             }
         } catch (AccessException | NotBoundException e) {
             logger.error("Cannot access service on server");

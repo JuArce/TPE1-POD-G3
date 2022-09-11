@@ -5,5 +5,5 @@ public enum ActionType {
     ASSIGN,
     MOVE,
     ALTERNATIVES,
-    CHANGE_TICKET
+    CHANGETICKET
 }

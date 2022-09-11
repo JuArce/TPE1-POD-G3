@@ -95,7 +95,7 @@ public class CliParser {
                     return Optional.empty();
                 }
             }
-            case CHANGE_TICKET -> {
+            case CHANGETICKET -> {
                 if (cmd.hasOption("Dflight") && cmd.hasOption("Dpassenger") && cmd.hasOption("DoriginalFlight")) {
                     args.setFlightCode(cmd.getOptionValue("Dflight"));
                     args.setPassengerName(cmd.getOptionValue("Dpassenger"));
@@ -108,7 +108,7 @@ public class CliParser {
             }
         }
 
-        return Optional.of(args);
+        return args.isValid() ? Optional.of(args) : Optional.empty();
     }
 
     public static class Arguments extends ar.edu.itba.pod.client.models.Arguments {
