@@ -1,5 +1,19 @@
 # TPE1-POD-G3
 
+## Tabla de Contenidos
+
+- [TPE1-POD-G3](#tpe1-pod-g3)
+  - [Tabla de Contenidos](#tabla-de-contenidos)
+  - [Autores](#autores)
+  - [Compilación](#compilación)
+  - [Ejecución](#ejecución)
+    - [Server](#server)
+    - [Clientes](#clientes)
+      - [Admin Client](#admin-client)
+      - [Notification Client](#notification-client)
+      - [SeatMapClient](#seatmapclient)
+      - [SeatAssignmentClient](#seatassignmentclient)
+
 ## Autores
 
 -   [Arce, Julián Francisco](https://github.com/JuArce)
@@ -16,9 +30,33 @@ Para compilar el proyecto, se debe ejecutar el siguiente comando en la raíz del
 mvn clean install
 ```
 
-## Clientes
+## Ejecución
 
-### Admin Client
+Para ejecutar el proyecto, se debe ejecutar el siguiente comando:
+
+```bash
+cd scripts
+./run-rmi
+./run-\[server\|admin\|notifications\|seatMap\|seatAssign\] <params>
+```
+
+Donde se tiene:
+
+- `server` para ejecutar el servidor.
+- `admin` para ejecutar el cliente de administración.
+- `notifications` para ejecutar el cliente de notificaciones.
+- `seatMap` para ejecutar el cliente de mapa de asientos.
+- `seatAssign` para ejecutar el cliente de asignación de asientos.
+
+A continuación se detallan las funcionalidades y ejecución de los clientes.
+
+### Server
+
+El servidor toma un parámetro opcional `-p` que indica el puerto en el que se ejecutará el servidor. Por defecto, el puerto es 1099.
+
+### Clientes
+
+#### Admin Client
 
 ```sh
 ./run-admin -DserverAddress=xx.xx.xx.xx:yyyy -Daction=actionName [ -DinPath=filename | -Dflight=flightCode ]
@@ -30,7 +68,7 @@ mvn clean install
 | `-DinPath` | \[OPCIONAL\] `String filename`                                     | Ruta del archivo de entrada.            |
 | `-Dflight` | \[OPCIONAL\] `String flightCode`                                   | Código del vuelo.                       |
 
-## Notification Client
+#### Notification Client
 
 ```sh
 ./run-notifcations -DserverAddress=xx.xx.xx.xx:yyyy -Dflight=flightCode -Dpassenger=name
@@ -41,7 +79,7 @@ mvn clean install
 | `-Dflight`    | `String flightCode` | Código del vuelo.    |
 | `-Dpassenger` | `String name`       | Nombre del pasajero. |
 
-## SeatMapClient
+#### SeatMapClient
 
 ```sh
 ./run-seatMap -DserverAddress=xx.xx.xx.xx:yyyy -Dflight=flightCode [ -Dcategory=catName | -Drow=rowNumber ] -DoutPath=output.csv
@@ -54,16 +92,16 @@ mvn clean install
 | `-Drow`      | \[OPCIONAL\] `int rowNumber`                            | Número de fila.             |
 | `-DoutPath`  | `String output.csv`                                     | Ruta del archivo de salida. |
 
-## SeatAssignmentClient
+#### SeatAssignmentClient
 
 ```sh
 ./run-seatAssign -DserverAddress=xx.xx.xx.xx:yyyy -Daction=actionName -Dflight=flightCode [ -Dpassenger=name | -Drow=num | -Dcol=L | -DoriginalFlight=originFlightCode ]
 ```
 
-| Opción        | Opciones                     | Descripción                             |
-| ------------- | ---------------------------- | --------------------------------------- |
-| `-Daction`    | `assign`, `unassign`, `move` | Acción a realizar del cliente de admin. |
-| `-Dflight`    | `String flightCode`          | Código del vuelo.                       |
-| `-Dpassenger` | \[OPCIONAL\] `String name`   | Nombre del pasajero.                    |
-| `-Drow`       | \[OPCIONAL\] `int rowNumber` | Número de fila.                         |
-| `-Dcol`       | \[OPCIONAL\] `char col`      | Letra de columna.                       |
+| Opción        | Opciones                                                    | Descripción                             |
+| ------------- | ----------------------------------------------------------- | --------------------------------------- |
+| `-Daction`    | `assign`, `status`, `move`, `alternatives` y `changeTicket` | Acción a realizar del cliente de admin. |
+| `-Dflight`    | `String flightCode`                                         | Código del vuelo.                       |
+| `-Dpassenger` | \[OPCIONAL\] `String name`                                  | Nombre del pasajero.                    |
+| `-Drow`       | \[OPCIONAL\] `int rowNumber`                                | Número de fila.                         |
+| `-Dcol`       | \[OPCIONAL\] `char col`                                     | Letra de columna.                       |
