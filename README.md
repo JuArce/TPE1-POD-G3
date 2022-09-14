@@ -13,11 +13,11 @@
 
 ## Autores
 
--   [Arce, Julián Francisco](https://github.com/JuArce)
--   [Catalán, Roberto José](https://github.com/rcatalan98)
--   [Dell'Isola, Lucas](https://github.com/ldellisola)
--   [Pecile, Gian Luca](https://github.com/glpecile)
--   [Torrusio, Lucía](https://github.com/luciatorrusio)
+- [Arce, Julián Francisco](https://github.com/JuArce)
+- [Catalán, Roberto José](https://github.com/rcatalan98)
+- [Dell'Isola, Lucas](https://github.com/ldellisola)
+- [Pecile, Gian Luca](https://github.com/glpecile)
+- [Torrusio, Lucía](https://github.com/luciatorrusio)
 
 ## Compilación
 
@@ -29,23 +29,29 @@ mvn clean install
 
 ## Ejecución
 
-Para ejecutar el proyecto, se debe ejecutar el siguiente comando:
+Para la ejecución del proyecto, es necesario ejecutar los siguientes comandos:
 
 ```bash
 cd scripts
 ./run-rmi
+```
+
+Luego, en otra terminal, ejecutar:
+
+```bash
+cd scripts
 ./run-[server | admin | notifications | seatMap | seatAssign] <params>
 ```
 
 Donde se tiene:
 
--   [`server`](#server) para ejecutar el servidor.
--   [`admin`](#admin-client) para ejecutar el cliente de administración.
--   [`notifications`](#notification-client) para ejecutar el cliente de notificaciones.
--   [`seatMap`](#seatassignmentclient) para ejecutar el cliente de mapa de asientos.
--   [`seatAssign`](#seatassignmentclient) para ejecutar el cliente de asignación de asientos.
+- [`server`](#server) para ejecutar el servidor.
+- [`admin`](#admin-client) para ejecutar el cliente de administración.
+- [`notifications`](#notification-client) para ejecutar el cliente de notificaciones.
+- [`seatMap`](#seatassignmentclient) para ejecutar el cliente de mapa de asientos.
+- [`seatAssign`](#seatassignmentclient) para ejecutar el cliente de asignación de asientos.
 
-A continuación se detallan las funcionalidades y ejecución de los clientes.
+A continuación se detallan las funcionalidades y ejecución de los clientes y server.
 
 ### Server
 
@@ -54,6 +60,8 @@ El servidor toma un parámetro opcional `-p` que indica el puerto en el que se e
 Por defecto el puerto es `1099`.
 
 ### Clientes
+
+A continuación se detallan los clientes y sus funcionalidades.
 
 #### Admin Client
 
