@@ -1,9 +1,6 @@
 # TPE1-POD-G3
 
-## Tabla de Contenidos
-
 - [TPE1-POD-G3](#tpe1-pod-g3)
-  - [Tabla de Contenidos](#tabla-de-contenidos)
   - [Autores](#autores)
   - [Compilación](#compilación)
   - [Ejecución](#ejecución)
@@ -37,22 +34,24 @@ Para ejecutar el proyecto, se debe ejecutar el siguiente comando:
 ```bash
 cd scripts
 ./run-rmi
-./run-\[server\|admin\|notifications\|seatMap\|seatAssign\] <params>
+./run-[server | admin | notifications | seatMap | seatAssign] <params>
 ```
 
 Donde se tiene:
 
-- `server` para ejecutar el servidor.
-- `admin` para ejecutar el cliente de administración.
-- `notifications` para ejecutar el cliente de notificaciones.
-- `seatMap` para ejecutar el cliente de mapa de asientos.
-- `seatAssign` para ejecutar el cliente de asignación de asientos.
+-   [`server`](#server) para ejecutar el servidor.
+-   [`admin`](#admin-client) para ejecutar el cliente de administración.
+-   [`notifications`](#notification-client) para ejecutar el cliente de notificaciones.
+-   [`seatMap`](#seatassignmentclient) para ejecutar el cliente de mapa de asientos.
+-   [`seatAssign`](#seatassignmentclient) para ejecutar el cliente de asignación de asientos.
 
 A continuación se detallan las funcionalidades y ejecución de los clientes.
 
 ### Server
 
-El servidor toma un parámetro opcional `-p` que indica el puerto en el que se ejecutará el servidor. Por defecto, el puerto es 1099.
+El servidor toma un parámetro opcional `-p` que indica el puerto en el que se ejecutará el servidor.
+
+Por defecto el puerto es `1099`.
 
 ### Clientes
 
@@ -105,3 +104,5 @@ El servidor toma un parámetro opcional `-p` que indica el puerto en el que se e
 | `-Dpassenger` | \[OPCIONAL\] `String name`                                  | Nombre del pasajero.                    |
 | `-Drow`       | \[OPCIONAL\] `int rowNumber`                                | Número de fila.                         |
 | `-Dcol`       | \[OPCIONAL\] `char col`                                     | Letra de columna.                       |
+
+------------------------------------------------------------------------
