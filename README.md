@@ -47,12 +47,12 @@ mvn clean install
 ./run-seatMap -DserverAddress=xx.xx.xx.xx:yyyy -Dflight=flightCode [ -Dcategory=catName | -Drow=rowNumber ] -DoutPath=output.csv
 ```
 
-| Opción       | Opciones                     | Descripción                 |
-| ------------ | ---------------------------- | --------------------------- | --------- | ----------------------- |
-| `-Dflight`   | `String flightCode`          | Código del vuelo.           |
-| `-Dcategory` | \[OPCIONAL\] `(BUSINESS      | PREMIUM_ECONOMY             | ECONOMY)` | Nombre de la categoría. |
-| `-Drow`      | \[OPCIONAL\] `int rowNumber` | Número de fila.             |
-| `-DoutPath`  | `String output.csv`          | Ruta del archivo de salida. |
+| Opción       | Opciones                                                | Descripción                 |
+| ------------ | ------------------------------------------------------- | --------------------------- |
+| `-Dflight`   | `String flightCode`                                     | Código del vuelo.           |
+| `-Dcategory` | \[OPCIONAL\] `(BUSINESS \| PREMIUM_ECONOMY \| ECONOMY)` | Nombre de la categoría.     |
+| `-Drow`      | \[OPCIONAL\] `int rowNumber`                            | Número de fila.             |
+| `-DoutPath`  | `String output.csv`                                     | Ruta del archivo de salida. |
 
 ## SeatAssignmentClient
 
